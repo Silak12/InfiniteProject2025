@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline - The Infinite Canvas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="navbar.js"></script>
+    <style>
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Glasmorphismus Effekte */
+        .glass-navbar {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.03),
+                rgba(255, 255, 255, 0.01)
+            );
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            height: 60px; /* FIXED HEIGHT */
+        }
+        
+        .navbar-text {
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.3s ease;
+        }
+        
+        .navbar-text.scrolled {
+            color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .glass-navbar.scrolled {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95),
+                rgba(255, 255, 255, 0.85)
+            );
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-element {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.08),
+                rgba(255, 255, 255, 0.02)
+            );
+            backdrop-filter: blur(15px) saturate(200%);
+            -webkit-backdrop-filter: blur(15px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Burger Menu Styles */
+        .burger-menu {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05)
+            );
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .menu-overlay {
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Dynamic navbar for timeline page */
+        .timeline-navbar {
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-navbar.scrolled {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95),
+                rgba(255, 255, 255, 0.85)
+            );
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Responsive Typography */
+        @media (max-width: 768px) {
+            .glass-element {
+                backdrop-filter: blur(10px) saturate(150%);
+                -webkit-backdrop-filter: blur(10px) saturate(150%);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-zinc-50 via-stone-50 to-zinc-100 text-zinc-800 font-light">
+    
+    <!-- Navbar will be inserted here by JavaScript -->
+
+    <!-- Hero Section -->
+    <section class="h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-zinc-100/50 to-stone-200/50"></div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-8">
+            <h1 class="text-6xl md:text-8xl font-extralight mb-8 tracking-[-0.02em] leading-none" id="page-title">
+                Project Timeline
+            </h1>
+            <p class="text-xl md:text-2xl font-light text-zinc-600 mb-12 leading-relaxed" id="page-subtitle">
+                From Concept to Community
+            </p>
+            <div class="flex items-center justify-center space-x-8 text-sm tracking-widest uppercase text-zinc-500">
+                <span>2025</span>
+                <span>—</span>
+                <span id="journey-label">The Journey</span>
+                <span>—</span>
+                <span>Digital</span>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+            <p class="text-sm text-zinc-500 mb-4 tracking-widest uppercase" id="scroll-hint">Scroll to explore</p>
+            <i class="fas fa-arrow-down text-zinc-400 animate-bounce"></i>
+        </div>
+    </section>
+
+    <!-- Project Timeline -->
+    <section class="py-32 px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="relative">
+                <!-- Timeline Line -->
+                <div class="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-zinc-300 via-zinc-400 to-zinc-300 transform -translate-x-1/2"></div>
+                
+                <div class="space-y-16">
+                    <!-- Phase 1 -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 text-right pr-8">
+                            <div class="glass-element rounded-2xl p-6 mr-4">
+                                <h3 class="text-xl font-light mb-2" id="phase1-title">Conception</h3>
+                                <p class="text-zinc-600 mb-3" id="phase1-desc">The concept for The Infinite Canvas is born</p>
+                                <div class="text-sm text-zinc-500 font-medium">Early 2025</div>
+                                <div class="mt-4 text-xs text-zinc-400" id="phase1-detail">
+                                    Initial brainstorming and concept development for a collaborative art platform that breaks traditional boundaries.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 w-4 h-4 bg-zinc-400 rounded-full transform -translate-x-1/2 z-10"></div>
+                        <div class="flex-1 pl-8"></div>
+                    </div>
+                    
+                    <!-- Phase 2 - Current -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 pr-8"></div>
+                        <div class="absolute left-1/2 w-6 h-6 bg-gradient-to-r from-zinc-600 to-zinc-700 rounded-full transform -translate-x-1/2 z-10 shadow-lg">
+                            <div class="absolute inset-1 bg-white rounded-full animate-pulse"></div>
+                        </div>
+                        <div class="flex-1 text-left pl-8">
+                            <div class="glass-element rounded-2xl p-6 ml-4 border-l-4 border-zinc-600">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h3 class="text-xl font-light" id="phase2-title">Artist Recruitment</h3>
+                                    <span class="px-2 py-1 bg-zinc-800 text-white text-xs rounded-full" id="current-label">Current</span>
+                                </div>
+                                <p class="text-zinc-600 mb-3" id="phase2-desc">Finding talented artists and planning first artworks</p>
+                                <div class="text-sm text-zinc-500 font-medium">Until August 2025</div>
+                                <div class="mt-4 text-xs text-zinc-400" id="phase2-detail">
+                                    Reaching out to digital artists, building relationships, and creating the first collaborative pieces that will define the project.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Phase 3 -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 text-right pr-8">
+                            <div class="glass-element rounded-2xl p-6 mr-4 opacity-75">
+                                <h3 class="text-xl font-light mb-2" id="phase3-title">Launch</h3>
+                                <p class="text-zinc-600 mb-3" id="phase3-desc">First artworks go live on TikTok</p>
+                                <div class="text-sm text-zinc-500 font-medium">Mid August 2025</div>
+                                <div class="mt-4 text-xs text-zinc-400" id="phase3-detail">
+                                    The inaugural release of collaborative artworks, introducing the world to the infinite canvas concept.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 w-4 h-4 bg-zinc-300 rounded-full transform -translate-x-1/2 z-10"></div>
+                        <div class="flex-1 pl-8"></div>
+                    </div>
+                    
+                    <!-- Phase 4 -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 pr-8"></div>
+                        <div class="absolute left-1/2 w-4 h-4 bg-zinc-300 rounded-full transform -translate-x-1/2 z-10"></div>
+                        <div class="flex-1 text-left pl-8">
+                            <div class="glass-element rounded-2xl p-6 ml-4 opacity-75">
+                                <h3 class="text-xl font-light mb-2" id="phase4-title">Community Building</h3>
+                                <p class="text-zinc-600 mb-3" id="phase4-desc">Growing a vibrant artist community</p>
+                                <div class="text-sm text-zinc-500 font-medium">Ongoing</div>
+                                <div class="mt-4 text-xs text-zinc-400" id="phase4-detail">
+                                    Expanding the network of participating artists and fostering a sustainable creative ecosystem.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 5 -->
+                    <div class="relative flex items-center">
+                        <div class="flex-1 text-right pr-8">
+                            <div class="glass-element rounded-2xl p-6 mr-4 opacity-50">
+                                <h3 class="text-xl font-light mb-2" id="phase5-title">Global Expansion</h3>
+                                <p class="text-zinc-600 mb-3" id="phase5-desc">International artist collaborations</p>
+                                <div class="text-sm text-zinc-500 font-medium">2026</div>
+                                <div class="mt-4 text-xs text-zinc-400" id="phase5-detail">
+                                    Connecting artists across continents to create truly global collaborative artworks.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute left-1/2 w-4 h-4 bg-zinc-200 rounded-full transform -translate-x-1/2 z-10"></div>
+                        <div class="flex-1 pl-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-32 px-8 bg-gradient-to-br from-zinc-100/30 to-stone-100/30">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-extralight text-center mb-16 tracking-wide" id="current-stats">Current Progress</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-element rounded-2xl p-8 text-center">
+                    <div class="text-4xl font-extralight text-zinc-800 mb-2">12</div>
+                    <div class="text-sm tracking-widest uppercase text-zinc-500" id="stat-artists">Artists Contacted</div>
+                </div>
+                
+                <div class="glass-element rounded-2xl p-8 text-center">
+                    <div class="text-4xl font-extralight text-zinc-800 mb-2">3</div>
+                    <div class="text-sm tracking-widest uppercase text-zinc-500" id="stat-confirmed">Confirmed Participants</div>
+                </div>
+                
+                <div class="glass-element rounded-2xl p-8 text-center">
+                    <div class="text-4xl font-extralight text-zinc-800 mb-2">18</div>
+                    <div class="text-sm tracking-widest uppercase text-zinc-500" id="stat-days">Days Until Launch</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 px-8 border-t border-zinc-200/50">
+        <div class="max-w-6xl mx-auto text-center">
+            <h3 class="text-2xl font-extralight mb-6 tracking-wider">The Infinite Canvas</h3>
+            <p class="text-zinc-500 text-sm tracking-widest uppercase mb-8" id="footer-text">
+                Where dreams become art
+            </p>
+            <div class="flex items-center justify-center space-x-8 text-xs text-zinc-400 tracking-wider uppercase">
+                <span id="footer-follow">Follow</span>
+                <a href="#" class="hover:text-zinc-600 transition-colors">TikTok</a>
+                <a href="#" class="hover:text-zinc-600 transition-colors">Instagram</a>
+                <span>—</span>
+                <span>2025</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page-specific translations
+        const pageTranslations = {
+            en: {
+                pageTitle: 'Project Timeline',
+                pageSubtitle: 'From Concept to Community',
+                journeyLabel: 'The Journey',
+                scrollHint: 'Scroll to explore',
+                phase1Title: 'Conception',
+                phase1Desc: 'The concept for The Infinite Canvas is born',
+                phase1Detail: 'Initial brainstorming and concept development for a collaborative art platform that breaks traditional boundaries.',
+                phase2Title: 'Artist Recruitment',
+                phase2Desc: 'Finding talented artists and planning first artworks',
+                phase2Detail: 'Reaching out to digital artists, building relationships, and creating the first collaborative pieces that will define the project.',
+                phase3Title: 'Launch',
+                phase3Desc: 'First artworks go live on TikTok',
+                phase3Detail: 'The inaugural release of collaborative artworks, introducing the world to the infinite canvas concept.',
+                phase4Title: 'Community Building',
+                phase4Desc: 'Growing a vibrant artist community',
+                phase4Detail: 'Expanding the network of participating artists and fostering a sustainable creative ecosystem.',
+                phase5Title: 'Global Expansion',
+                phase5Desc: 'International artist collaborations',
+                phase5Detail: 'Connecting artists across continents to create truly global collaborative artworks.',
+                currentLabel: 'Current',
+                currentStats: 'Current Progress',
+                statArtists: 'Artists Contacted',
+                statConfirmed: 'Confirmed Participants',
+                statDays: 'Days Until Launch',
+                footerText: 'Where dreams become art',
+                footerFollow: 'Follow'
+            },
+            de: {
+                pageTitle: 'Projekt Timeline',
+                pageSubtitle: 'Vom Konzept zur Community',
+                journeyLabel: 'Die Reise',
+                scrollHint: 'Scrollen um zu entdecken',
+                phase1Title: 'Ideengeburt',
+                phase1Desc: 'Das Konzept für The Infinite Canvas entsteht',
+                phase1Detail: 'Erste Brainstorming-Sessions und Konzeptentwicklung für eine kollaborative Kunstplattform, die traditionelle Grenzen durchbricht.',
+                phase2Title: 'Künstler Akquise',
+                phase2Desc: 'Talentierte Künstler finden und erste Bilder planen',
+                phase2Detail: 'Kontaktaufnahme mit digitalen Künstlern, Beziehungsaufbau und Erstellung der ersten kollaborativen Werke, die das Projekt definieren werden.',
+                phase3Title: 'Launch',
+                phase3Desc: 'Die ersten Kunstwerke gehen live auf TikTok',
+                phase3Detail: 'Die Premieren-Veröffentlichung kollaborativer Kunstwerke, die der Welt das Infinite Canvas Konzept vorstellt.',
+                phase4Title: 'Community Aufbau',
+                phase4Desc: 'Aufbau einer lebendigen Künstler-Community',
+                phase4Detail: 'Erweiterung des Netzwerks teilnehmender Künstler und Förderung eines nachhaltigen kreativen Ökosystems.',
+                phase5Title: 'Globale Expansion',
+                phase5Desc: 'Internationale Künstler-Kollaborationen',
+                phase5Detail: 'Künstler über Kontinente hinweg verbinden, um wirklich globale kollaborative Kunstwerke zu schaffen.',
+                currentLabel: 'Aktuell',
+                currentStats: 'Aktueller Fortschritt',
+                statArtists: 'Künstler Kontaktiert',
+                statConfirmed: 'Bestätigte Teilnehmer',
+                statDays: 'Tage bis Launch',
+                footerText: 'Wo Träume zu Kunst werden',
+                footerFollow: 'Folgen'
+            }
+        };
+
+        // Page-specific language update function
+        function updatePageLanguage(lang) {
+            const t = pageTranslations[lang];
+            
+            document.getElementById('page-title').textContent = t.pageTitle;
+            document.getElementById('page-subtitle').textContent = t.pageSubtitle;
+            document.getElementById('journey-label').textContent = t.journeyLabel;
+            document.getElementById('scroll-hint').textContent = t.scrollHint;
+            document.getElementById('phase1-title').textContent = t.phase1Title;
+            document.getElementById('phase1-desc').textContent = t.phase1Desc;
+            document.getElementById('phase1-detail').textContent = t.phase1Detail;
+            document.getElementById('phase2-title').textContent = t.phase2Title;
+            document.getElementById('phase2-desc').textContent = t.phase2Desc;
+            document.getElementById('phase2-detail').textContent = t.phase2Detail;
+            document.getElementById('phase3-title').textContent = t.phase3Title;
+            document.getElementById('phase3-desc').textContent = t.phase3Desc;
+            document.getElementById('phase3-detail').textContent = t.phase3Detail;
+            document.getElementById('phase4-title').textContent = t.phase4Title;
+            document.getElementById('phase4-desc').textContent = t.phase4Desc;
+            document.getElementById('phase4-detail').textContent = t.phase4Detail;
+            document.getElementById('phase5-title').textContent = t.phase5Title;
+            document.getElementById('phase5-desc').textContent = t.phase5Desc;
+            document.getElementById('phase5-detail').textContent = t.phase5Detail;
+            document.getElementById('current-label').textContent = t.currentLabel;
+            document.getElementById('current-stats').textContent = t.currentStats;
+            document.getElementById('stat-artists').textContent = t.statArtists;
+            document.getElementById('stat-confirmed').textContent = t.statConfirmed;
+            document.getElementById('stat-days').textContent = t.statDays;
+            document.getElementById('footer-text').textContent = t.footerText;
+            document.getElementById('footer-follow').textContent = t.footerFollow;
+        }
+
+        // Dynamic navbar for timeline page
+        function initTimelineNavbar() {
+            const navbar = document.querySelector('.glass-navbar');
+            const navbarTexts = document.querySelectorAll('.navbar-text');
+            
+            if (!navbar) return;
+            
+            navbar.classList.add('timeline-navbar');
+            
+            window.addEventListener('scroll', () => {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                    navbarTexts.forEach(text => text.classList.add('scrolled'));
+                } else {
+                    navbar.classList.remove('scrolled');
+                    navbarTexts.forEach(text => text.classList.remove('scrolled'));
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize navbar with current page
+            initNavbar('timeline');
+            
+            // Initialize dynamic navbar behavior
+            initTimelineNavbar();
+        });
+    </script>
+</body>
+</html>

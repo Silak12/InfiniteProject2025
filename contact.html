@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - The Infinite Canvas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="navbar.js"></script>
+    <style>
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Glasmorphismus Effekte */
+        .glass-navbar {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.03),
+                rgba(255, 255, 255, 0.01)
+            );
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            height: 60px; /* FIXED HEIGHT */
+        }
+        
+        .navbar-text {
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.3s ease;
+        }
+        
+        .navbar-text.scrolled {
+            color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .glass-navbar.scrolled {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95),
+                rgba(255, 255, 255, 0.85)
+            );
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-element {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.08),
+                rgba(255, 255, 255, 0.02)
+            );
+            backdrop-filter: blur(15px) saturate(200%);
+            -webkit-backdrop-filter: blur(15px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Form Styles */
+        .form-input {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05)
+            );
+            backdrop-filter: blur(10px) saturate(150%);
+            -webkit-backdrop-filter: blur(10px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.15),
+                rgba(255, 255, 255, 0.08)
+            );
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Burger Menu Styles */
+        .burger-menu {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05)
+            );
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .menu-overlay {
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Dynamic navbar for contact page */
+        .contact-navbar {
+            transition: all 0.3s ease;
+        }
+        
+        .contact-navbar.scrolled {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95),
+                rgba(255, 255, 255, 0.85)
+            );
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Responsive Typography */
+        @media (max-width: 768px) {
+            .glass-element {
+                backdrop-filter: blur(10px) saturate(150%);
+                -webkit-backdrop-filter: blur(10px) saturate(150%);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-zinc-50 via-stone-50 to-zinc-100 text-zinc-800 font-light">
+    
+    <!-- Navbar will be inserted here by JavaScript -->
+
+    <!-- Hero Section -->
+    <section class="h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-zinc-100/50 to-stone-200/50"></div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-8">
+            <h1 class="text-6xl md:text-8xl font-extralight mb-8 tracking-[-0.02em] leading-none" id="page-title">
+                Get in Touch
+            </h1>
+            <p class="text-xl md:text-2xl font-light text-zinc-600 mb-12 leading-relaxed" id="page-subtitle">
+                Join the Creative Revolution
+            </p>
+            <div class="flex items-center justify-center space-x-8 text-sm tracking-widest uppercase text-zinc-500">
+                <span>2025</span>
+                <span>—</span>
+                <span id="collaboration-label">Collaboration</span>
+                <span>—</span>
+                <span>Digital</span>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+            <p class="text-sm text-zinc-500 mb-4 tracking-widest uppercase" id="scroll-hint">Scroll to connect</p>
+            <i class="fas fa-arrow-down text-zinc-400 animate-bounce"></i>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="py-32 px-8">
+        <div class="max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                <!-- Contact Info -->
+                <div>
+                    <h2 class="text-4xl font-extralight mb-8 leading-tight" id="contact-title">Let's Create Together</h2>
+                    <p class="text-lg leading-relaxed text-zinc-600 mb-12" id="contact-text">
+                        Are you an artist looking to push the boundaries of creativity? Join us in redefining what collaborative art can be in the digital age.
+                    </p>
+                    
+                    <div class="space-y-8">
+                        <div class="glass-element rounded-2xl p-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-zinc-800/20 flex items-center justify-center">
+                                    <i class="fas fa-users text-zinc-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-light mb-1" id="artist-title">For Artists</h3>
+                                    <p class="text-sm text-zinc-500" id="artist-desc">Collaborative opportunities</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-element rounded-2xl p-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-zinc-800/20 flex items-center justify-center">
+                                    <i class="fas fa-handshake text-zinc-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-light mb-1" id="partner-title">Partnerships</h3>
+                                    <p class="text-sm text-zinc-500" id="partner-desc">Brand collaborations & sponsorships</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-element rounded-2xl p-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-full bg-zinc-800/20 flex items-center justify-center">
+                                    <i class="fas fa-question-circle text-zinc-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-light mb-1" id="general-title">General Inquiries</h3>
+                                    <p class="text-sm text-zinc-500" id="general-desc">Questions about the project</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="glass-element rounded-3xl p-8">
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-zinc-700 mb-2" id="label-name">Name</label>
+                            <input type="text" id="name" name="name" required 
+                                   class="form-input w-full px-4 py-3 rounded-xl text-zinc-800 placeholder-zinc-500 focus:outline-none"
+                                   placeholder="Your full name">
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-zinc-700 mb-2" id="label-email">Email</label>
+                            <input type="email" id="email" name="email" required 
+                                   class="form-input w-full px-4 py-3 rounded-xl text-zinc-800 placeholder-zinc-500 focus:outline-none"
+                                   placeholder="your@email.com">
+                        </div>
+                        
+                        <div>
+                            <label for="type" class="block text-sm font-medium text-zinc-700 mb-2" id="label-type">Inquiry Type</label>
+                            <select id="type" name="type" required 
+                                    class="form-input w-full px-4 py-3 rounded-xl text-zinc-800 focus:outline-none">
+                                <option value="" id="option-select">Select an option</option>
+                                <option value="artist" id="option-artist">Artist Collaboration</option>
+                                <option value="partnership" id="option-partnership">Partnership</option>
+                                <option value="general" id="option-general">General Question</option>
+                                <option value="other" id="option-other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="portfolio" class="block text-sm font-medium text-zinc-700 mb-2" id="label-portfolio">Portfolio URL <span class="text-zinc-400">(optional)</span></label>
+                            <input type="url" id="portfolio" name="portfolio" 
+                                   class="form-input w-full px-4 py-3 rounded-xl text-zinc-800 placeholder-zinc-500 focus:outline-none"
+                                   placeholder="https://yourportfolio.com">
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-zinc-700 mb-2" id="label-message">Message</label>
+                            <textarea id="message" name="message" rows="6" required 
+                                      class="form-input w-full px-4 py-3 rounded-xl text-zinc-800 placeholder-zinc-500 focus:outline-none resize-none"
+                                      placeholder="Tell us about your vision..."></textarea>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="w-full bg-zinc-800 text-white py-4 px-6 rounded-xl font-light text-lg hover:bg-zinc-700 transition-colors duration-300"
+                                id="submit-btn">
+                            Send Message
+                        </button>
+                    </form>
+                    
+                    <!-- Success Message -->
+                    <div id="success-message" class="hidden mt-6 p-4 bg-green-100 border border-green-300 rounded-xl">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-green-600"></i>
+                            <span class="text-green-700" id="success-text">Thank you! Your message has been sent successfully.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Links Section -->
+    <section class="py-32 px-8 bg-gradient-to-br from-zinc-100/30 to-stone-100/30">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-extralight mb-8 tracking-wide" id="social-title">Follow Our Journey</h2>
+            <p class="text-lg text-zinc-600 mb-12" id="social-desc">Stay updated with the latest artworks and behind-the-scenes content</p>
+            
+            <div class="flex justify-center space-x-8">
+                <a href="#" class="glass-element rounded-full w-16 h-16 flex items-center justify-center hover:bg-white/20 transition-all group">
+                    <i class="fab fa-tiktok text-zinc-600 text-xl group-hover:text-zinc-800 transition-colors"></i>
+                </a>
+                <a href="#" class="glass-element rounded-full w-16 h-16 flex items-center justify-center hover:bg-white/20 transition-all group">
+                    <i class="fab fa-instagram text-zinc-600 text-xl group-hover:text-zinc-800 transition-colors"></i>
+                </a>
+                <a href="#" class="glass-element rounded-full w-16 h-16 flex items-center justify-center hover:bg-white/20 transition-all group">
+                    <i class="fab fa-youtube text-zinc-600 text-xl group-hover:text-zinc-800 transition-colors"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 px-8 border-t border-zinc-200/50">
+        <div class="max-w-6xl mx-auto text-center">
+            <h3 class="text-2xl font-extralight mb-6 tracking-wider">The Infinite Canvas</h3>
+            <p class="text-zinc-500 text-sm tracking-widest uppercase mb-8" id="footer-text">
+                Where dreams become art
+            </p>
+            <div class="flex items-center justify-center space-x-8 text-xs text-zinc-400 tracking-wider uppercase">
+                <span id="footer-follow">Follow</span>
+                <a href="#" class="hover:text-zinc-600 transition-colors">TikTok</a>
+                <a href="#" class="hover:text-zinc-600 transition-colors">Instagram</a>
+                <span>—</span>
+                <span>2025</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page-specific translations
+        const pageTranslations = {
+            en: {
+                pageTitle: 'Get in Touch',
+                pageSubtitle: 'Join the Creative Revolution',
+                collaborationLabel: 'Collaboration',
+                scrollHint: 'Scroll to connect',
+                contactTitle: 'Let\'s Create Together',
+                contactText: 'Are you an artist looking to push the boundaries of creativity? Join us in redefining what collaborative art can be in the digital age.',
+                artistTitle: 'For Artists',
+                artistDesc: 'Collaborative opportunities',
+                partnerTitle: 'Partnerships',
+                partnerDesc: 'Brand collaborations & sponsorships',
+                generalTitle: 'General Inquiries',
+                generalDesc: 'Questions about the project',
+                labelName: 'Name',
+                labelEmail: 'Email',
+                labelType: 'Inquiry Type',
+                labelPortfolio: 'Portfolio URL',
+                labelMessage: 'Message',
+                optionSelect: 'Select an option',
+                optionArtist: 'Artist Collaboration',
+                optionPartnership: 'Partnership',
+                optionGeneral: 'General Question',
+                optionOther: 'Other',
+                submitBtn: 'Send Message',
+                successText: 'Thank you! Your message has been sent successfully.',
+                socialTitle: 'Follow Our Journey',
+                socialDesc: 'Stay updated with the latest artworks and behind-the-scenes content',
+                footerText: 'Where dreams become art',
+                footerFollow: 'Follow'
+            },
+            de: {
+                pageTitle: 'Kontakt',
+                pageSubtitle: 'Werde Teil der kreativen Revolution',
+                collaborationLabel: 'Kollaboration',
+                scrollHint: 'Scrollen um zu verbinden',
+                contactTitle: 'Lass uns zusammen kreativ werden',
+                contactText: 'Bist du ein Künstler, der die Grenzen der Kreativität erweitern möchte? Hilf uns dabei, neu zu definieren, was kollaborative Kunst im digitalen Zeitalter sein kann.',
+                artistTitle: 'Für Künstler',
+                artistDesc: 'Kollaborative Möglichkeiten',
+                partnerTitle: 'Partnerschaften',
+                partnerDesc: 'Marken-Kollaborationen & Sponsoring',
+                generalTitle: 'Allgemeine Anfragen',
+                generalDesc: 'Fragen zum Projekt',
+                labelName: 'Name',
+                labelEmail: 'E-Mail',
+                labelType: 'Art der Anfrage',
+                labelPortfolio: 'Portfolio URL',
+                labelMessage: 'Nachricht',
+                optionSelect: 'Option wählen',
+                optionArtist: 'Künstler Kollaboration',
+                optionPartnership: 'Partnerschaft',
+                optionGeneral: 'Allgemeine Frage',
+                optionOther: 'Sonstiges',
+                submitBtn: 'Nachricht senden',
+                successText: 'Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.',
+                socialTitle: 'Folge unserer Reise',
+                socialDesc: 'Bleib auf dem Laufenden mit den neuesten Kunstwerken und Behind-the-Scenes Inhalten',
+                footerText: 'Wo Träume zu Kunst werden',
+                footerFollow: 'Folgen'
+            }
+        };
+
+        // Page-specific language update function
+        function updatePageLanguage(lang) {
+            const t = pageTranslations[lang];
+            
+            document.getElementById('page-title').textContent = t.pageTitle;
+            document.getElementById('page-subtitle').textContent = t.pageSubtitle;
+            document.getElementById('collaboration-label').textContent = t.collaborationLabel;
+            document.getElementById('scroll-hint').textContent = t.scrollHint;
+            document.getElementById('contact-title').textContent = t.contactTitle;
+            document.getElementById('contact-text').textContent = t.contactText;
+            document.getElementById('artist-title').textContent = t.artistTitle;
+            document.getElementById('artist-desc').textContent = t.artistDesc;
+            document.getElementById('partner-title').textContent = t.partnerTitle;
+            document.getElementById('partner-desc').textContent = t.partnerDesc;
+            document.getElementById('general-title').textContent = t.generalTitle;
+            document.getElementById('general-desc').textContent = t.generalDesc;
+            document.getElementById('label-name').textContent = t.labelName;
+            document.getElementById('label-email').textContent = t.labelEmail;
+            document.getElementById('label-type').textContent = t.labelType;
+            document.getElementById('label-portfolio').innerHTML = t.labelPortfolio + ' <span class="text-zinc-400">(optional)</span>';
+            document.getElementById('label-message').textContent = t.labelMessage;
+            document.getElementById('option-select').textContent = t.optionSelect;
+            document.getElementById('option-artist').textContent = t.optionArtist;
+            document.getElementById('option-partnership').textContent = t.optionPartnership;
+            document.getElementById('option-general').textContent = t.optionGeneral;
+            document.getElementById('option-other').textContent = t.optionOther;
+            document.getElementById('submit-btn').textContent = t.submitBtn;
+            document.getElementById('success-text').textContent = t.successText;
+            document.getElementById('social-title').textContent = t.socialTitle;
+            document.getElementById('social-desc').textContent = t.socialDesc;
+            document.getElementById('footer-text').textContent = t.footerText;
+            document.getElementById('footer-follow').textContent = t.footerFollow;
+        }
+
+        // Form handling
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            // Simulate form submission
+            const submitBtn = document.getElementById('submit-btn');
+            const successMessage = document.getElementById('success-message');
+            
+            const sendingText = currentLanguage === 'en' ? 'Sending...' : 'Wird gesendet...';
+            const originalText = currentLanguage === 'en' ? 'Send Message' : 'Nachricht senden';
+            
+            submitBtn.textContent = sendingText;
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                successMessage.classList.remove('hidden');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                
+                // Reset form
+                document.getElementById('contact-form').reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                }, 5000);
+            }, 1500);
+        }
+
+        // Dynamic navbar for contact page
+        function initContactNavbar() {
+            const navbar = document.querySelector('.glass-navbar');
+            const navbarTexts = document.querySelectorAll('.navbar-text');
+            
+            if (!navbar) return;
+            
+            navbar.classList.add('contact-navbar');
+            
+            window.addEventListener('scroll', () => {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                
+                if (scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                    navbarTexts.forEach(text => text.classList.add('scrolled'));
+                } else {
+                    navbar.classList.remove('scrolled');
+                    navbarTexts.forEach(text => text.classList.remove('scrolled'));
+                }
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize navbar with current page
+            initNavbar('contact');
+            
+            // Initialize dynamic navbar behavior
+            initContactNavbar();
+            
+            // Add form event listener
+            document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);
+        });
+    </script>
+</body>
+</html>
