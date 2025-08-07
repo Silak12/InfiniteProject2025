@@ -6,6 +6,7 @@
     <title>The Infinite Canvas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="navbar.js"></script>
     <style>
         .scrollbar-hide {
             -ms-overflow-style: none;
@@ -156,7 +157,7 @@
             filter: brightness(1.3) saturate(1.5) contrast(1.1);
         }
         
-        /* Liquid Glass Orb - BEHIND artworks */
+        /* Liquid Glass Orb - BEHIND artworks - FORCE VISIBILITY */
         .glass-orb {
             position: fixed;
             width: 400px;
@@ -183,6 +184,9 @@
             transform: translate(-50%, -50%);
             transition: all 0.1s ease-out;
             mix-blend-mode: screen;
+            opacity: 0; /* Start hidden */
+            left: -500px; /* Start offscreen */
+            top: -500px;
         }
         
         /* Hero Text Overlay */
@@ -260,29 +264,97 @@
         .mood-soft { background: linear-gradient(135deg, rgba(254, 205, 211, 0.8), rgba(252, 165, 165, 0.8)); }
         .mood-electric { background: linear-gradient(135deg, rgba(196, 181, 253, 0.8), rgba(147, 51, 234, 0.8)); }
         
-        /* NAHTLOSES GALERIE GRID - SEAMLESS! */
-        .seamless-gallery-grid {
+        /* METALLIC FRAME GALLERY - INSPIRED BY CODEPEN */
+        .metallic-gallery-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0; /* KEINE LÜCKEN! */
+            gap: 20px; /* Kleiner Abstand zwischen den Rahmen */
             width: 100%;
-            max-width: 900px; /* Feste Breite für Konsistenz */
+            max-width: 1000px;
             margin: 0 auto;
         }
         
-        /* Gallery Piece Styles - MIT KÜNSTLER INFO OVERLAY */
+        @media (max-width: 768px) {
+            .metallic-gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .metallic-gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+        
+        /* Gallery Piece Styles - METALLIC FRAMES */
         .gallery-artwork {
             position: relative;
-            aspect-ratio: 9 / 11.91; /* NEW: Instagram-like aspect ratio */
+            aspect-ratio: 4 / 5; /* Gleichmäßige Größe für alle Bilder */
             overflow: hidden;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Metallic Frame Effect */
+            border-radius: 4px;
+            border: solid 10px;
+            border-image: linear-gradient(to bottom right, #56575a, #000) 1;
+            box-shadow: 
+                0 0 5px 0 rgba(0, 0, 0, 0.25) inset, 
+                0 5px 10px 5px rgba(0, 0, 0, 0.25);
         }
         
         .gallery-artwork:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px);
             z-index: 20;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 0 5px 0 rgba(0, 0, 0, 0.25) inset, 
+                0 10px 20px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Artwork Image - FIXED SIZE */
+        .gallery-artwork .artwork-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 1px;
+            
+            /* Inner metallic border */
+            border: groove 4px;
+            border-bottom-color: #56575a;
+            border-left-color: #2b2b2d;
+            border-right-color: #2b2b2d;
+            border-top-color: #000;
+        }
+        
+        /* Metallic Shine Overlay */
+        .metallic-overlay {
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .metallic-overlay::before {
+            content: "";
+            background: rgba(255, 255, 255, 0.15);
+            width: 40%;
+            height: 100%;
+            top: 0%;
+            left: -125%;
+            transform: skew(-25deg);
+            position: absolute;
+            transition: left 1.2s ease-out;
+        }
+        
+        .gallery-artwork:hover .metallic-overlay::before {
+            left: 200%;
         }
         
         /* Künstler Info Overlay - Hidden by default */
@@ -388,13 +460,13 @@
         #navbar-museum {
             transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 60;
-            opacity: 0;
-            transform: translateX(-50%) translateY(10px) scale(0.9);
+            opacity: 1;
+            transform: translateX(-50%) translateY(-50%) scale(1);
         }
         
         #navbar-museum.absorbed {
-            opacity: 1 !important;
-            transform: translateX(-50%) translateY(0) scale(1);
+            opacity: 0 !important;
+            transform: translateX(-50%) translateY(-50%) scale(0.9);
         }
         
         /* Responsive */
@@ -408,101 +480,17 @@
                 backdrop-filter: blur(10px) saturate(150%);
                 -webkit-backdrop-filter: blur(10px) saturate(150%);
             }
-            
-            .seamless-gallery-grid {
-                max-width: 100%;
-                margin: 0;
-            }
         }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-zinc-50 via-stone-50 to-zinc-100 text-zinc-800 font-light">
     
-    <!-- SCHLANKE Glasmorphismus Header -->
-    <header class="fixed top-0 left-0 right-0 z-50 glass-navbar">
-        <div class="flex justify-between items-center px-4 md:px-8 h-full">
-            <!-- Desktop: Show logo -->
-            <div class="glass-element rounded-full px-3 md:px-4 py-1.5 hidden md:block">
-                <a href="index.html" class="navbar-text text-sm md:text-base tracking-[0.2em] font-extralight hover:opacity-80 transition-all">The Infinite Canvas</a>
-            </div>
-            
-            <!-- Mobile: Empty space -->
-            <div class="md:hidden"></div>
-            
-            <!-- Museum Text in Navbar - FIXED POSITION -->
-            <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 glass-element rounded-full px-3 md:px-4 py-1.5 pointer-events-none" id="navbar-museum">
-                <h2 class="navbar-text text-sm md:text-base tracking-[0.2em] font-extralight whitespace-nowrap">Museum</h2>
-            </div>
-            
-            <!-- Burger Menu Button -->
-            <button onclick="toggleMenu()" class="burger-menu rounded-full p-2 transition-all hover:bg-white/20 relative z-[70]" id="burger-btn">
-                <i class="navbar-text fas fa-bars text-sm"></i>
-            </button>
-        </div>
-    </header>
-
-    <!-- Mobile Menu Overlay -->
-    <div id="menu-overlay" class="fixed inset-0 z-[100] bg-black/50 hidden" style="backdrop-filter: blur(8px);">
-        <div class="fixed top-0 right-0 h-full w-80 transform translate-x-full transition-transform duration-300" id="menu-panel" style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85)); backdrop-filter: blur(20px); border-left: 1px solid rgba(255, 255, 255, 0.3);">
-            <div class="p-8">
-                <!-- Close Button -->
-                <div class="flex justify-end mb-8">
-                    <button onclick="toggleMenu()" class="glass-element rounded-full p-3 hover:bg-white/20 transition-all relative z-[110]">
-                        <i class="fas fa-times text-neutral-800"></i>
-                    </button>
-                </div>
-                
-                <!-- Menu Items -->
-                <nav class="space-y-6">
-                    <!-- Mobile: Show logo in menu -->
-                    <div class="md:hidden glass-element rounded-2xl p-4 bg-neutral-800/10 mb-6">
-                        <div class="text-center">
-                            <span class="text-lg font-light text-neutral-800">The Infinite Canvas</span>
-                        </div>
-                    </div>
-                    
-                    <a href="index.html" class="block glass-element rounded-2xl p-4 hover:bg-white/20 transition-all relative z-[105] bg-neutral-800/10">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-home text-neutral-800"></i>
-                            <span class="text-lg font-light text-neutral-800" id="menu-home">Home</span>
-                        </div>
-                    </a>
-                    
-                    <a href="timeline.html" class="block glass-element rounded-2xl p-4 hover:bg-white/20 transition-all relative z-[105]">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-clock text-neutral-600"></i>
-                            <span class="text-lg font-light text-neutral-800" id="menu-timeline">Timeline</span>
-                        </div>
-                    </a>
-                    
-                    <a href="contact.html" class="block glass-element rounded-2xl p-4 hover:bg-white/20 transition-all relative z-[105]">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-envelope text-neutral-600"></i>
-                            <span class="text-lg font-light text-neutral-800" id="menu-contact">Contact</span>
-                        </div>
-                    </a>
-                    
-                    <!-- Language Toggle -->
-                    <div class="glass-element rounded-2xl p-4 relative z-[105]">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <i class="fas fa-globe text-neutral-600"></i>
-                                <span class="text-lg font-light text-neutral-800" id="menu-language">Language</span>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 rounded-full text-sm transition-all bg-neutral-800/20 text-neutral-800 font-medium relative z-[110]">EN</button>
-                                <button onclick="setLanguage('de')" id="btn-de" class="px-3 py-1 rounded-full text-sm transition-all text-neutral-600 hover:text-neutral-800 relative z-[110]">DE</button>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-
-    <!-- Progress Indicator -->
-    <div class="fixed top-0 left-0 w-full h-0.5 z-50">
-        <div id="progress-bar" class="h-full bg-gradient-to-r from-white/60 to-white/40 transition-all duration-300 shadow-sm" style="width: 0%"></div>
+    <!-- Navbar will be inserted here by navbar.js -->
+    <div id="navbar-container"></div>
+    
+    <!-- DEBUG: Show loading status -->
+    <div id="debug-info" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; z-index: 9999; font-size: 12px;">
+        Loading...
     </div>
 
     <!-- Liquid Glass Hero Section -->
@@ -572,63 +560,34 @@
         </div>
     </section>
 
-    <!-- NAHTLOSE Professional Gallery Section -->
-    <section id="gallery-section" class="relative bg-gradient-to-b from-neutral-900 to-neutral-800 min-h-screen">
-        <!-- Gallery Ambient Lighting -->
-        <div class="absolute inset-0 bg-gradient-to-t from-neutral-900/50 via-transparent to-transparent"></div>
-        <div class="absolute inset-0">
-            <div class="absolute top-0 left-1/4 w-1/2 h-32 bg-gradient-to-b from-neutral-700/20 to-transparent blur-3xl"></div>
-            <div class="absolute bottom-0 right-1/4 w-1/3 h-24 bg-gradient-to-t from-neutral-600/10 to-transparent blur-2xl"></div>
-        </div>
+    <!-- METALLIC FRAME Gallery Section -->
+    <section id="gallery-section" class="relative min-h-screen" style="background-color: #d8dbe2; background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.15) 70%), linear-gradient(0deg, rgba(255, 255, 255, 0.15) 50%, transparent 70%), url(https://grainy-gradients.vercel.app/noise.svg);">
         
-        <!-- Museum Header -->
+        <!-- Gallery Header mit metallic Style -->
         <div id="museum-header" class="sticky top-0 z-40 museum-header py-8">
             <div class="max-w-6xl mx-auto px-8 relative">
-                <!-- Gallery Track Lighting -->
-                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-neutral-600/30 to-transparent"></div>
-                <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-neutral-500/50 rounded-full"></div>
-                
-                <div class="text-center">
-                    <div class="inline-flex items-center space-x-3 mb-4 px-4 py-2 rounded-full bg-neutral-700/30 backdrop-blur-sm border border-neutral-600/20">
-                        <div class="w-1.5 h-1.5 bg-neutral-400 rounded-full"></div>
-                        <span class="text-xs font-light tracking-wider uppercase text-neutral-400">Gallery Collection</span>
+                <!-- Metallic Header Container -->
+                <div class="max-w-4xl mx-auto p-6 rounded-md" style="background-image: linear-gradient(to bottom right, #3d3d3d, #000); box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.25), 0 5px 10px 5px rgba(0, 0, 0, 0.25); position: relative;">
+                    
+                    <!-- Metallic Corner Ornaments -->
+                    <div style="position: absolute; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(to bottom right, #000, #bfbfbf, #000); box-shadow: 0 0 0 1px #bfbfbf, 1px 2px 2px 2px rgba(0, 0, 0, 0.5); top: 15px; left: 15px;"></div>
+                    <div style="position: absolute; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(to bottom right, #000, #bfbfbf, #000); box-shadow: 0 0 0 1px #bfbfbf, 1px 2px 2px 2px rgba(0, 0, 0, 0.5); top: 15px; right: 15px;"></div>
+                    <div style="position: absolute; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(to bottom right, #000, #bfbfbf, #000); box-shadow: 0 0 0 1px #bfbfbf, 1px 2px 2px 2px rgba(0, 0, 0, 0.5); bottom: 15px; left: 15px;"></div>
+                    <div style="position: absolute; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(to bottom right, #000, #bfbfbf, #000); box-shadow: 0 0 0 1px #bfbfbf, 1px 2px 2px 2px rgba(0, 0, 0, 0.5); bottom: 15px; right: 15px;"></div>
+                    
+                    <div class="text-center">
+                        <h2 class="text-4xl font-bold tracking-wide uppercase" style="color: #000; background-image: linear-gradient(to bottom right, #f8d88f, #c6a647); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5); letter-spacing: 2px;" id="gallery-title">Art Gallery</h2>
+                        <p class="text-sm text-neutral-600 mt-2 font-light">Curated Collection • 2025</p>
                     </div>
-                    <h2 class="text-4xl font-extralight tracking-wide text-neutral-200" id="gallery-title">Main Exhibition</h2>
-                    <p class="text-sm text-neutral-400 mt-2 font-light">Curated Selection • 2025</p>
                 </div>
             </div>
         </div>
 
-        <!-- NAHTLOSE Gallery Wall - KEIN GAP! -->
+        <!-- METALLIC FRAME Gallery Grid -->
         <div class="relative z-10 pb-32">            
             <div class="max-w-7xl mx-auto px-8">
                 <div id="gallery-container" class="space-y-0">
-                    <!-- SEAMLESS Gallery Grid wird hier eingefügt -->
-                </div>
-            </div>
-            
-            <!-- Gallery Floor Reflection -->
-            <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-neutral-900 to-transparent"></div>
-        </div>
-        
-        <!-- Gallery Information Panel -->
-        <div class="absolute bottom-8 left-8 right-8">
-            <div class="max-w-6xl mx-auto">
-                <div class="glass-element rounded-2xl p-6 bg-neutral-800/40 backdrop-blur-sm border border-neutral-600/30">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                        <div class="space-y-2">
-                            <div class="text-lg font-light text-neutral-300">Gallery Hours</div>
-                            <div class="text-sm text-neutral-400">Always Open • Digital Space</div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-lg font-light text-neutral-300">Current Exhibition</div>
-                            <div class="text-sm text-neutral-400">The Infinite Canvas • Ongoing</div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="text-lg font-light text-neutral-300">Admission</div>
-                            <div class="text-sm text-neutral-400">Free • Interactive Experience</div>
-                        </div>
-                    </div>
+                    <!-- METALLIC Gallery Grid wird hier eingefügt -->
                 </div>
             </div>
         </div>
@@ -683,48 +642,42 @@
         // Page translations - Updated for professional gallery
         const pageTranslations = {
             en: {
-                subtitle: 'The whole is more than the sum of its parts',
+                subtitle: "'The whole is more than the sum of its parts'",
                 scrollHint: 'Scroll to explore',
-                heroCollective: 'Unfinished Artwork',
+                heroCollective: 'Interactive Gallery',
                 aboutTitle: 'The Exhibition',
                 aboutText: 'Step into a curated space where digital artistry meets physical presence. Each piece has been carefully selected to create a dialogue between artist and observer.',
                 conceptLabel: 'Philosophy',
                 conceptText: '"Art is not what you see, but what you make others see." — In the digital realm, we extend this vision beyond the canvas into infinite possibility.',
                 artistCounterLabel: 'Featured Works',
-                galleryTitle: 'Main Exhibition',
+                galleryTitle: 'Art Gallery',
                 viewWork: 'View work',
                 footerText: 'Where art transcends reality',
-                footerFollow: 'Follow',
-                menuHome: 'Home',
-                menuTimeline: 'Timeline',
-                menuContact: 'Contact',
-                menuLanguage: 'Language'
+                footerFollow: 'Follow'
             },
             de: {
                 subtitle: "'Das Ganze ist mehr als die Summe seiner Teile'",
                 scrollHint: 'Scrollen um zu entdecken',
-                heroCollective: 'Unvollendetes Kunstwerk',
+                heroCollective: 'Interaktive Galerie',
                 aboutTitle: 'Die Ausstellung',
                 aboutText: 'Betreten Sie einen kuratierten Raum, wo digitale Kunst auf physische Präsenz trifft. Jedes Werk wurde sorgfältig ausgewählt, um einen Dialog zwischen Künstler und Betrachter zu schaffen.',
                 conceptLabel: 'Philosophie',
                 conceptText: '"Kunst ist nicht das, was du siehst, sondern das, was du andere sehen lässt." — Im digitalen Bereich erweitern wir diese Vision über die Leinwand hinaus in unendliche Möglichkeiten.',
                 artistCounterLabel: 'Ausgestellte Werke',
-                galleryTitle: 'Hauptausstellung',
+                galleryTitle: 'Kunst Galerie',
                 viewWork: 'Werk betrachten',
                 footerText: 'Wo Kunst die Realität übersteigt',
-                footerFollow: 'Folgen',
-                menuHome: 'Startseite',
-                menuTimeline: 'Timeline',
-                menuContact: 'Kontakt',
-                menuLanguage: 'Sprache'
+                footerFollow: 'Folgen'
             }
         };
 
-        let currentLanguage = 'en';
+        // Use navbar's currentLanguage instead of declaring our own
+        // let currentLanguage = 'en'; // REMOVED - conflicts with navbar.js
 
         // Language update function
         function updatePageLanguage(lang) {
-            currentLanguage = lang;
+            // Get currentLanguage from navbar.js
+            const currentLanguage = window.currentLanguage || lang;
             const t = pageTranslations[lang];
             
             document.getElementById('hero-subtitle').textContent = t.subtitle;
@@ -739,79 +692,22 @@
             document.getElementById('footer-text').textContent = t.footerText;
             document.getElementById('footer-follow').textContent = t.footerFollow;
             
-            // Update menu items
-            const menuHome = document.getElementById('menu-home');
-            const menuTimeline = document.getElementById('menu-timeline');
-            const menuContact = document.getElementById('menu-contact');
-            const menuLanguage = document.getElementById('menu-language');
-            
-            if (menuHome) menuHome.textContent = t.menuHome;
-            if (menuTimeline) menuTimeline.textContent = t.menuTimeline;
-            if (menuContact) menuContact.textContent = t.menuContact;
-            if (menuLanguage) menuLanguage.textContent = t.menuLanguage;
-            
-            // Update button styles
-            const btnDe = document.getElementById('btn-de');
-            const btnEn = document.getElementById('btn-en');
-            
-            if (btnDe && btnEn) {
-                btnDe.className = lang === 'de' ? 
-                    'px-3 py-1 rounded-full text-sm transition-all bg-neutral-800/20 text-neutral-800 font-medium relative z-[110]' : 
-                    'px-3 py-1 rounded-full text-sm transition-all text-neutral-600 hover:text-neutral-800 relative z-[110]';
-                btnEn.className = lang === 'en' ? 
-                    'px-3 py-1 rounded-full text-sm transition-all bg-neutral-800/20 text-neutral-800 font-medium relative z-[110]' : 
-                    'px-3 py-1 rounded-full text-sm transition-all text-neutral-600 hover:text-neutral-800 relative z-[110]';
-            }
-            
-            // Update navbar museum text
-            const navbarMuseum = document.querySelector('#navbar-museum h2');
-            if (navbarMuseum) {
-                navbarMuseum.textContent = t.galleryTitle;
-            }
-        }
-
-        // Navigation Functions
-        function toggleMenu() {
-            const overlay = document.getElementById('menu-overlay');
-            const panel = document.getElementById('menu-panel');
-            const burger = document.getElementById('burger-btn');
-            
-            if (!overlay || !panel || !burger) return;
-            
-            if (overlay.classList.contains('hidden')) {
-                // Show overlay
-                overlay.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-                
-                // Slide in panel after a tiny delay
-                setTimeout(() => {
-                    panel.style.transform = 'translateX(0)';
-                }, 10);
-                
-                // Update burger icon
-                burger.innerHTML = '<i class="navbar-text fas fa-times text-sm"></i>';
-            } else {
-                // Slide out panel
-                panel.style.transform = 'translateX(100%)';
-                
-                // Hide overlay after animation
-                setTimeout(() => {
-                    overlay.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }, 300);
-                
-                // Update burger icon
-                burger.innerHTML = '<i class="navbar-text fas fa-bars text-sm"></i>';
-            }
-        }
-
-        function setLanguage(lang) {
-            updatePageLanguage(lang);
+            // Update all "View work" buttons in gallery
+            const viewWorkButtons = document.querySelectorAll('.artist-link-btn span');
+            viewWorkButtons.forEach(button => {
+                button.textContent = t.viewWork;
+            });
         }
 
         // Create hero artworks grid - OHNE sichtbare Künstlernamen
         function createHeroArtworks() {
+            console.log('Creating hero artworks...');
             const container = document.getElementById('artworks-layer');
+            
+            if (!container) {
+                console.error('artworks-layer container not found!');
+                return;
+            }
             
             // Clear existing content
             container.innerHTML = '';
@@ -826,6 +722,8 @@
                 `;
                 container.appendChild(tile);
             });
+            
+            console.log(`Created ${artworkData.length} artwork tiles`);
         }
 
         // PURE Mouse Control (PC) + Auto-Movement (Mobile) Spotlight
@@ -833,7 +731,15 @@
             const heroSection = document.getElementById('hero-section');
             const glassOrb = document.getElementById('glass-orb');
             const artworksLayer = document.getElementById('artworks-layer');
-            const artworkTiles = document.querySelectorAll('.artwork-tile');
+            
+            if (!heroSection || !glassOrb || !artworksLayer) {
+                console.error('Hero elements not found, retrying...');
+                setTimeout(initLiquidGlass, 100);
+                return;
+            }
+            
+            // Get artwork tiles AFTER they are created
+            const getArtworkTiles = () => document.querySelectorAll('.artwork-tile');
             
             let mouseX = 0;
             let mouseY = 0;
@@ -1008,6 +914,7 @@
                 const screenY = heroRect.top + spotlightY;
                 const centerRadius = spotlightRadius * 0.4;
                 
+                const artworkTiles = getArtworkTiles();
                 artworkTiles.forEach(tile => {
                     const tileRect = tile.getBoundingClientRect();
                     const tileCenterX = tileRect.left + tileRect.width / 2;
@@ -1035,80 +942,35 @@
                 artworksLayer.style.mask = hiddenMask;
                 artworksLayer.style.webkitMask = hiddenMask;
                 
+                const artworkTiles = getArtworkTiles();
                 artworkTiles.forEach(tile => {
                     tile.classList.remove('in-spotlight-center');
                 });
             }
         }
 
-        // SMARTE Dynamic navbar - NUR wenn über weißem Hintergrund
-        function initDynamicNavbar() {
-            const navbar = document.querySelector('.glass-navbar');
-            const navbarTexts = document.querySelectorAll('.navbar-text');
-            
-            window.addEventListener('scroll', () => {
-                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-                const heroHeight = window.innerHeight;
-                const navbarHeight = 60; // FIXED HEIGHT
-                
-                // Berechne wieviel % der Navbar über weißem Hintergrund ist
-                const overlapStart = Math.max(0, scrollY + navbarHeight - heroHeight);
-                const overlapRatio = Math.min(1, overlapStart / navbarHeight);
-                
-                // Anwenden basierend auf Overlap-Ratio
-                if (overlapRatio > 0.1) { // Beginne Übergang bei 10% Overlap
-                    navbar.classList.add('scrolled');
-                    navbarTexts.forEach(text => text.classList.add('scrolled'));
-                    
-                    // Progressiver Übergang für smooth effect
-                    const whiteOpacity = Math.min(1, overlapRatio * 1.2);
-                    navbar.style.background = `linear-gradient(135deg, 
-                        rgba(255, 255, 255, ${0.03 + whiteOpacity * 0.92}),
-                        rgba(255, 255, 255, ${0.01 + whiteOpacity * 0.84})
-                    )`;
-                } else {
-                    navbar.classList.remove('scrolled');
-                    navbarTexts.forEach(text => text.classList.remove('scrolled'));
-                    navbar.style.background = '';
-                }
-                
-                updateScrollProgress();
-            });
-        }
-
-        // Scroll progress
-        function updateScrollProgress() {
-            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            
-            // Calculate scroll progress
-            const scrollProgress = (scrollY / (documentHeight - windowHeight)) * 100;
-            const progressBar = document.getElementById('progress-bar');
-            if (progressBar) {
-                progressBar.style.width = scrollProgress + '%';
-            }
-        }
-
-        // NAHTLOSE GALERIE - Erstelle seamless grid
-        function createSeamlessGallery() {
+        // METALLIC FRAME GALERIE - Erstelle gleichmäßige Rahmen
+        function createMetallicGallery() {
             const container = document.getElementById('gallery-container');
             container.innerHTML = '';
             
-            // Erstelle ein EINZIGES seamless grid
-            const seamlessGrid = document.createElement('div');
-            seamlessGrid.className = 'seamless-gallery-grid';
+            // Erstelle metallic gallery grid
+            const metallicGrid = document.createElement('div');
+            metallicGrid.className = 'metallic-gallery-grid';
             
-            // Füge ALLE Artworks nahtlos hinzu - OHNE sichtbare Icons/Namen
+            // Füge ALLE Artworks mit metallischen Rahmen hinzu
             artworkData.forEach((artwork, index) => {
                 const galleryArtwork = document.createElement('div');
                 galleryArtwork.className = 'gallery-artwork';
                 galleryArtwork.innerHTML = `
-                    <!-- Artwork Background - NUR Farbe, KEINE sichtbaren Elemente -->
-                    <div class="absolute inset-0 mood-${artwork.mood}">
-                        <!-- Glass Reflection -->
+                    <!-- Artwork Image - GLEICHE GRÖSSE für alle -->
+                    <div class="absolute inset-0 mood-${artwork.mood} artwork-image" style="border-radius: 1px;">
+                        <!-- Glass Reflection für das "Bild" -->
                         <div class="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none"></div>
                     </div>
+                    
+                    <!-- Metallic Shine Overlay -->
+                    <div class="metallic-overlay"></div>
                     
                     <!-- Künstler Info Overlay - Nur sichtbar bei Hover/Click -->
                     <div class="artist-info-overlay">
@@ -1117,7 +979,7 @@
                             <div class="artist-handle">${artwork.instagram}</div>
                             <a href="${artwork.link}" target="_blank" rel="noopener noreferrer" class="artist-link-btn" onclick="event.stopPropagation()">
                                 <i class="fas fa-external-link-alt"></i>
-                                <span>${currentLanguage === 'en' ? 'View work' : 'Werk ansehen'}</span>
+                                <span>${(window.currentLanguage === 'en') ? 'View work' : 'Werk ansehen'}</span>
                             </a>
                         </div>
                     </div>
@@ -1142,37 +1004,69 @@
                     });
                 }
                 
-                seamlessGrid.appendChild(galleryArtwork);
+                metallicGrid.appendChild(galleryArtwork);
             });
             
-            container.appendChild(seamlessGrid);
+            container.appendChild(metallicGrid);
         }
 
         // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize dynamic navbar
-            initDynamicNavbar();
+            console.log('DOM loaded, initializing...');
             
-            // Create hero artworks
-            createHeroArtworks();
+            // Update debug info
+            const debugInfo = document.getElementById('debug-info');
+            debugInfo.textContent = 'DOM loaded, waiting for navbar...';
             
-            // Initialize liquid glass effect
-            initLiquidGlass();
-            
-            // Create seamless gallery
-            createSeamlessGallery();
-            
-            // Set default language
-            updatePageLanguage('en');
+            // Wait for navbar to be loaded first
+            setTimeout(() => {
+                debugInfo.textContent = 'Initializing navbar...';
+                
+                // Initialize navbar with current page
+                if (typeof initNavbar === 'function') {
+                    initNavbar('home');
+                    console.log('Navbar initialized');
+                    debugInfo.textContent = 'Navbar loaded, creating artworks...';
+                } else {
+                    console.error('initNavbar function not found');
+                    debugInfo.textContent = 'ERROR: navbar.js not loaded!';
+                    debugInfo.style.background = 'rgba(255,0,0,0.8)';
+                }
+                
+                // Create hero artworks FIRST
+                createHeroArtworks();
+                console.log('Hero artworks created');
+                debugInfo.textContent = 'Artworks created, initializing spotlight...';
+                
+                // Then initialize liquid glass effect
+                setTimeout(() => {
+                    initLiquidGlass();
+                    console.log('Liquid glass initialized');
+                    debugInfo.textContent = 'Spotlight active! Creating gallery...';
+                }, 100);
+                
+                // Create metallic gallery
+                createMetallicGallery();
+                console.log('Metallic gallery created');
+                
+                // Set default language
+                updatePageLanguage('en');
+                console.log('Language set to English');
+                
+                // Hide debug info after everything is loaded
+                setTimeout(() => {
+                    debugInfo.style.display = 'none';
+                }, 3000);
+                
+            }, 200); // Give navbar.js time to load
             
             // Listen to window scroll for museum header animation
             window.addEventListener('scroll', function() {
                 // Museum header animation
                 const museumHeader = document.getElementById('museum-header');
-                const navbarMuseum = document.getElementById('navbar-museum');
                 const gallerySection = document.getElementById('gallery-section');
                 
-                if (gallerySection && museumHeader && navbarMuseum) {
+                if (gallerySection && museumHeader) {
                     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
                     const galleryTop = gallerySection.offsetTop;
                     const headerHeight = 100;
@@ -1180,10 +1074,8 @@
                     
                     if (scrollY > scrollThreshold) {
                         museumHeader.classList.add('absorbed');
-                        navbarMuseum.classList.add('absorbed');
                     } else {
                         museumHeader.classList.remove('absorbed');
-                        navbarMuseum.classList.remove('absorbed');
                     }
                 }
             });
@@ -1197,15 +1089,10 @@
                 }
             });
             
-            // Close menu with Escape key
+            // Close menu and mobile artist info with Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
-                    const overlay = document.getElementById('menu-overlay');
-                    if (overlay && !overlay.classList.contains('hidden')) {
-                        toggleMenu();
-                    }
-                    
-                    // Also close mobile artist info
+                    // Close mobile artist info
                     if (window.innerWidth <= 768) {
                         document.querySelectorAll('.gallery-artwork').forEach(art => {
                             art.classList.remove('mobile-active');
@@ -1214,10 +1101,6 @@
                 }
             });
         });
-
-        // Make functions global for onclick handlers
-        window.toggleMenu = toggleMenu;
-        window.setLanguage = setLanguage;
     </script>
 </body>
 </html>

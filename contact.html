@@ -98,19 +98,6 @@
             backdrop-filter: blur(10px);
         }
         
-        /* Dynamic navbar for contact page */
-        .contact-navbar {
-            transition: all 0.3s ease;
-        }
-        
-        .contact-navbar.scrolled {
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.95),
-                rgba(255, 255, 255, 0.85)
-            );
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-        
         /* Responsive Typography */
         @media (max-width: 768px) {
             .glass-element {
@@ -122,7 +109,7 @@
 </head>
 <body class="min-h-screen bg-gradient-to-br from-zinc-50 via-stone-50 to-zinc-100 text-zinc-800 font-light">
     
-    <!-- Navbar will be inserted here by JavaScript -->
+    <!-- Navbar will be inserted here by navbar.js -->
 
     <!-- Hero Section -->
     <section class="h-screen flex items-center justify-center relative overflow-hidden">
@@ -426,35 +413,10 @@
             }, 1500);
         }
 
-        // Dynamic navbar for contact page
-        function initContactNavbar() {
-            const navbar = document.querySelector('.glass-navbar');
-            const navbarTexts = document.querySelectorAll('.navbar-text');
-            
-            if (!navbar) return;
-            
-            navbar.classList.add('contact-navbar');
-            
-            window.addEventListener('scroll', () => {
-                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-                
-                if (scrollY > 50) {
-                    navbar.classList.add('scrolled');
-                    navbarTexts.forEach(text => text.classList.add('scrolled'));
-                } else {
-                    navbar.classList.remove('scrolled');
-                    navbarTexts.forEach(text => text.classList.remove('scrolled'));
-                }
-            });
-        }
-
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize navbar with current page
             initNavbar('contact');
-            
-            // Initialize dynamic navbar behavior
-            initContactNavbar();
             
             // Add form event listener
             document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);

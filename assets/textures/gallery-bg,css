@@ -1,0 +1,45 @@
+/* Gallery Black Paper Canvas Background */
+#gallery-section {
+    background-image: 
+        /* Subtle noise pattern */
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.02) 1px, transparent 1px),
+        radial-gradient(circle at 80% 60%, rgba(255,255,255,0.01) 1px, transparent 1px),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.015) 1px, transparent 1px),
+        /* Paper texture simulation */
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 7px,
+            rgba(255,255,255,0.008) 8px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 7px,
+            rgba(255,255,255,0.006) 8px
+        );
+    background-size: 
+        8px 8px,
+        12px 12px,
+        10px 10px,
+        8px 8px,
+        8px 8px;
+    background-blend-mode: overlay, multiply, screen, overlay, normal;
+    background-color: #0a0a0c; /* Samtiges Schwarz */
+    position: relative;
+}
+
+/* Canvas Container für Pinselstriche - NON-BLOCKING */
+#brushCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.7;
+    /* PERFORMANCE: GPU-Layer */
+    transform: translateZ(0);
+    will-change: auto;
+}
