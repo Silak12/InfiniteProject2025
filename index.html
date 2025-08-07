@@ -268,7 +268,7 @@
         .metallic-gallery-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px; /* Kleiner Abstand zwischen den Rahmen */
+            gap: 3px; /* SEHR KLEINER ABSTAND - fast direkt aneinander */
             width: 100%;
             max-width: 1000px;
             margin: 0 auto;
@@ -277,14 +277,14 @@
         @media (max-width: 768px) {
             .metallic-gallery-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
+                gap: 2px; /* Noch kleiner für Mobile */
             }
         }
         
         @media (max-width: 480px) {
             .metallic-gallery-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 3px;
             }
         }
         
@@ -437,36 +437,51 @@
             backdrop-filter: blur(8px);
         }
         
-        /* Museums-Header Animation */
-        .museum-header {
-            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(0) scale(1);
-            z-index: 40;
-            background: linear-gradient(135deg, 
-                rgba(23, 23, 23, 0.95),
-                rgba(38, 38, 38, 0.95)
+        /* CLEAN Gallery Header - Integration in Website Design */
+        .gallery-header-wrapper {
+            position: relative;
+            background: linear-gradient(180deg, 
+                rgba(216, 219, 226, 0) 0%,
+                rgba(216, 219, 226, 0.3) 20%,
+                rgba(216, 219, 226, 0.8) 50%,
+                rgba(216, 219, 226, 1) 100%
             );
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(115, 115, 115, 0.2);
+            padding: 4rem 0 2rem 0;
+            margin-bottom: 2rem;
         }
         
-        .museum-header.absorbed {
-            opacity: 0;
-            transform: translateY(-60px) scale(0.8);
-            pointer-events: none;
+        .gallery-title-container {
+            position: relative;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
         
-        /* Navbar Museum Animation */
-        #navbar-museum {
-            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 60;
-            opacity: 1;
-            transform: translateX(-50%) translateY(-50%) scale(1);
+        .gallery-main-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 200;
+            color: rgba(0, 0, 0, 0.9);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+            text-shadow: none;
+            line-height: 1.1;
         }
         
-        #navbar-museum.absorbed {
-            opacity: 0 !important;
-            transform: translateX(-50%) translateY(-50%) scale(0.9);
+        .gallery-subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: rgba(0, 0, 0, 0.6);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        /* Smooth Integration Line */
+        .gallery-divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.3), transparent);
+            margin: 2rem auto 0 auto;
         }
         
         /* Responsive */
@@ -480,6 +495,46 @@
                 backdrop-filter: blur(10px) saturate(150%);
                 -webkit-backdrop-filter: blur(10px) saturate(150%);
             }
+        }
+        
+        /* Custom Slider Styles */
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider::-webkit-slider-thumb:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider::-webkit-slider-track {
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .slider::-moz-range-track {
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
         }
     </style>
 </head>
@@ -563,23 +618,12 @@
     <!-- METALLIC FRAME Gallery Section -->
     <section id="gallery-section" class="relative min-h-screen" style="background-color: #d8dbe2; background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.15) 70%), linear-gradient(0deg, rgba(255, 255, 255, 0.15) 50%, transparent 70%), url(https://grainy-gradients.vercel.app/noise.svg);">
         
-        <!-- Gallery Header mit metallic Style -->
-        <div id="museum-header" class="sticky top-0 z-40 museum-header py-8">
-            <div class="max-w-6xl mx-auto px-8 relative">
-                <!-- Metallic Header Container -->
-                <div class="max-w-4xl mx-auto p-6 rounded-md" style="background-image: linear-gradient(to bottom right, #3d3d3d, #000); box-shadow: inset 0 0 5px 0 rgba(0, 0, 0, 0.25), 0 5px 10px 5px rgba(0, 0, 0, 0.25); position: relative;">
-                    
-                    <!-- Metallic Corner Ornaments -->
-                    <div style="position: absolute; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(to bottom right, #000, #bfbfbf, #000); box-shadow: 0 0 0 1px #bfbfbf, 1px 2px 2px 2px rgba(0, 0, 0, 0.5); top: 15px; left: 15px;"></div>
-                    <div style="position: absolute; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(to bottom right, #000, #bfbfbf, #000); box-shadow: 0 0 0 1px #bfbfbf, 1px 2px 2px 2px rgba(0, 0, 0, 0.5); top: 15px; right: 15px;"></div>
-                    <div style="position: absolute; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(to bottom right, #000, #bfbfbf, #000); box-shadow: 0 0 0 1px #bfbfbf, 1px 2px 2px 2px rgba(0, 0, 0, 0.5); bottom: 15px; left: 15px;"></div>
-                    <div style="position: absolute; width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(to bottom right, #000, #bfbfbf, #000); box-shadow: 0 0 0 1px #bfbfbf, 1px 2px 2px 2px rgba(0, 0, 0, 0.5); bottom: 15px; right: 15px;"></div>
-                    
-                    <div class="text-center">
-                        <h2 class="text-4xl font-bold tracking-wide uppercase" style="color: #000; background-image: linear-gradient(to bottom right, #f8d88f, #c6a647); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5); letter-spacing: 2px;" id="gallery-title">Art Gallery</h2>
-                        <p class="text-sm text-neutral-600 mt-2 font-light">Curated Collection • 2025</p>
-                    </div>
-                </div>
+        <!-- Clean Gallery Header -->
+        <div class="gallery-header-wrapper">
+            <div class="gallery-title-container">
+                <h2 class="gallery-main-title" id="gallery-title">Art Gallery</h2>
+                <p class="gallery-subtitle">Curated Collection • 2025</p>
+                <div class="gallery-divider"></div>
             </div>
         </div>
 
@@ -611,8 +655,10 @@
     </footer>
 
     <script>
-        // Extended artwork data for hero section - MIT LINKS!
+        // Extended artwork data for hero section - MIT LINKS UND ECHTEN BILDERN!
+        // KORREKTE REIHENFOLGE: Von rechts nach links, von unten nach oben
         const artworkData = [
+            // FRAMES für Positionen 1-15 (obere Bereiche)
             { id: 1, artist: 'Maya Chen', instagram: '@maya.art', mood: 'ethereal', link: 'https://instagram.com/maya.art' },
             { id: 2, artist: 'Alex Rivera', instagram: '@alex.creates', mood: 'vibrant', link: 'https://instagram.com/alex.creates' },
             { id: 3, artist: 'Sophie Müller', instagram: '@sophie.kunst', mood: 'minimal', link: 'https://sophie-art.com' },
@@ -628,15 +674,16 @@
             { id: 13, artist: 'Isabella Lopez', instagram: '@bella.brush', mood: 'dark', link: 'https://instagram.com/bella.brush' },
             { id: 14, artist: 'Oliver Jensen', instagram: '@oliver.vision', mood: 'warm', link: 'https://instagram.com/oliver.vision' },
             { id: 15, artist: 'Mia Taylor', instagram: '@mia.modern', mood: 'cool', link: 'https://instagram.com/mia.modern' },
-            { id: 16, artist: 'Lucas Brown', instagram: '@lucas.lines', mood: 'bold', link: 'https://instagram.com/lucas.lines' },
-            { id: 17, artist: 'Nova Clark', instagram: '@nova.neo', mood: 'soft', link: 'https://instagram.com/nova.neo' },
-            { id: 18, artist: 'Kai Williams', instagram: '@kai.kolors', mood: 'electric', link: 'https://instagram.com/kai.kolors' },
-            { id: 19, artist: 'River Chen', instagram: '@river.flow', mood: 'ethereal', link: 'https://instagram.com/river.flow' },
-            { id: 20, artist: 'Phoenix Wright', instagram: '@phoenix.rise', mood: 'vibrant', link: 'https://instagram.com/phoenix.rise' },
-            { id: 21, artist: 'Luna Star', instagram: '@luna.cosmic', mood: 'minimal', link: 'https://instagram.com/luna.cosmic' },
-            { id: 22, artist: 'Ocean Blue', instagram: '@ocean.depths', mood: 'dark', link: 'https://instagram.com/ocean.depths' },
-            { id: 23, artist: 'Sky Turner', instagram: '@sky.infinite', mood: 'warm', link: 'https://instagram.com/sky.infinite' },
-            { id: 24, artist: 'Stone Grey', instagram: '@stone.solid', mood: 'cool', link: 'https://instagram.com/stone.solid' }
+            // ECHTE BILDER - Von unten nach oben, von rechts nach links
+            { id: 16, artist: 'Lucas Brown', instagram: '@lucas.lines', mood: 'bold', link: 'https://instagram.com/lucas.lines', image: '9.png' }, // Oben links
+            { id: 17, artist: 'Nova Clark', instagram: '@nova.neo', mood: 'soft', link: 'https://instagram.com/nova.neo', image: '8.png' }, // Oben mitte
+            { id: 18, artist: 'Kai Williams', instagram: '@kai.kolors', mood: 'electric', link: 'https://instagram.com/kai.kolors', image: '7.png' }, // Oben rechts
+            { id: 19, artist: 'River Chen', instagram: '@river.flow', mood: 'ethereal', link: 'https://instagram.com/river.flow', image: '6.png' }, // Mitte links
+            { id: 20, artist: 'Phoenix Wright', instagram: '@phoenix.rise', mood: 'vibrant', link: 'https://instagram.com/phoenix.rise', image: '5.png' }, // Mitte mitte
+            { id: 21, artist: 'Luna Star', instagram: '@luna.cosmic', mood: 'minimal', link: 'https://instagram.com/luna.cosmic', image: '4.png' }, // Mitte rechts
+            { id: 22, artist: 'Ocean Blue', instagram: '@ocean.depths', mood: 'dark', link: 'https://instagram.com/ocean.depths', image: '3.png' }, // Unten links
+            { id: 23, artist: 'Sky Turner', instagram: '@sky.infinite', mood: 'warm', link: 'https://instagram.com/sky.infinite', image: '2.png' }, // Unten mitte
+            { id: 24, artist: 'Stone Grey', instagram: '@stone.solid', mood: 'cool', link: 'https://instagram.com/stone.solid', image: '1.png' } // Unten rechts
         ];
 
         // Page translations - Updated for professional gallery
@@ -670,9 +717,6 @@
                 footerFollow: 'Folgen'
             }
         };
-
-        // Use navbar's currentLanguage instead of declaring our own
-        // let currentLanguage = 'en'; // REMOVED - conflicts with navbar.js
 
         // Language update function
         function updatePageLanguage(lang) {
@@ -949,7 +993,7 @@
             }
         }
 
-        // METALLIC FRAME GALERIE - Erstelle gleichmäßige Rahmen
+        // METALLIC FRAME GALERIE - Erstelle gleichmäßige Rahmen MIT ECHTEN BILDERN
         function createMetallicGallery() {
             const container = document.getElementById('gallery-container');
             container.innerHTML = '';
@@ -962,12 +1006,18 @@
             artworkData.forEach((artwork, index) => {
                 const galleryArtwork = document.createElement('div');
                 galleryArtwork.className = 'gallery-artwork';
-                galleryArtwork.innerHTML = `
-                    <!-- Artwork Image - GLEICHE GRÖSSE für alle -->
-                    <div class="absolute inset-0 mood-${artwork.mood} artwork-image" style="border-radius: 1px;">
+                
+                // Entscheide ob echtes Bild oder Mood-Color
+                const artworkContent = artwork.image ? 
+                    `<img src="${artwork.image}" alt="${artwork.artist}" class="artwork-image" style="border-radius: 1px;">` :
+                    `<div class="absolute inset-0 mood-${artwork.mood} artwork-image" style="border-radius: 1px;">
                         <!-- Glass Reflection für das "Bild" -->
                         <div class="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none"></div>
-                    </div>
+                    </div>`;
+                
+                galleryArtwork.innerHTML = `
+                    <!-- Artwork Image/Color - GLEICHE GRÖSSE für alle -->
+                    ${artworkContent}
                     
                     <!-- Metallic Shine Overlay -->
                     <div class="metallic-overlay"></div>
@@ -1008,6 +1058,182 @@
             });
             
             container.appendChild(metallicGrid);
+        }
+
+        // Homepage specific navbar behavior - Gallery toggle (UPDATED)
+        function initHomeNavbarBehavior() {
+            console.log('Initializing homepage navbar behavior');
+            
+            function handleScroll() {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Check if gallery section is in view
+                const gallerySection = document.getElementById('gallery-section');
+                const navbarGallery = document.getElementById('navbar-gallery');
+                const mainLogoMobile = document.getElementById('main-logo-mobile');
+                
+                if (gallerySection && navbarGallery && mainLogoMobile) {
+                    const rect = gallerySection.getBoundingClientRect();
+                    const isInView = rect.top <= 100; // When gallery is close to navbar
+                    const isMobile = window.innerWidth < 768;
+                    
+                    if (isInView) {
+                        // Gallery in view - show gallery title in navbar
+                        navbarGallery.style.opacity = '1';
+                        navbarGallery.style.transform = 'translate(-50%, -50%) scale(1)';
+                        
+                        // Mobile: Hide main logo from navbar completely
+                        if (isMobile) {
+                            mainLogoMobile.style.opacity = '0';
+                            mainLogoMobile.style.transform = 'scale(0.8)';
+                            mainLogoMobile.style.pointerEvents = 'none';
+                        }
+                    } else {
+                        // Gallery not in view - hide gallery title from navbar
+                        navbarGallery.style.opacity = '0';
+                        navbarGallery.style.transform = 'translate(-50%, -50%) scale(0.9)';
+                        
+                        // Mobile: Show main logo in navbar
+                        if (isMobile) {
+                            mainLogoMobile.style.opacity = '1';
+                            mainLogoMobile.style.transform = 'scale(1)';
+                            mainLogoMobile.style.pointerEvents = 'auto';
+                        }
+                    }
+                }
+            }
+            
+            window.addEventListener('scroll', handleScroll);
+            window.addEventListener('resize', handleScroll);
+            
+            // Initial check
+            setTimeout(handleScroll, 100);
+            
+            console.log('Homepage navbar behavior initialized');
+        }
+
+        // SMARTE Dynamic navbar - NUR wenn über weißem Hintergrund (from index.html)
+        function initDynamicNavbar() {
+            console.log('Initializing dynamic navbar behavior');
+            const navbar = document.querySelector('.glass-navbar');
+            const navbarTexts = document.querySelectorAll('.navbar-text');
+            
+            if (!navbar) return;
+            
+            window.addEventListener('scroll', () => {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                const heroHeight = window.innerHeight;
+                const navbarHeight = 60; // FIXED HEIGHT
+                
+                // Berechne wieviel % der Navbar über weißem Hintergrund ist
+                const overlapStart = Math.max(0, scrollY + navbarHeight - heroHeight);
+                const overlapRatio = Math.min(1, overlapStart / navbarHeight);
+                
+                // Anwenden basierend auf Overlap-Ratio
+                if (overlapRatio > 0.1) { // Beginne Übergang bei 10% Overlap
+                    navbar.classList.add('scrolled');
+                    navbarTexts.forEach(text => text.classList.add('scrolled'));
+                    
+                    // Progressiver Übergang für smooth effect
+                    const whiteOpacity = Math.min(1, overlapRatio * 1.2);
+                    navbar.style.background = `linear-gradient(135deg, 
+                        rgba(255, 255, 255, ${0.03 + whiteOpacity * 0.92}),
+                        rgba(255, 255, 255, ${0.01 + whiteOpacity * 0.84})
+                    )`;
+                } else {
+                    navbar.classList.remove('scrolled');
+                    navbarTexts.forEach(text => text.classList.remove('scrolled'));
+                    navbar.style.background = '';
+                }
+                
+                updateScrollProgress();
+            });
+        }
+
+        // Scroll progress
+        function updateScrollProgress() {
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // Calculate scroll progress
+            const scrollProgress = (scrollY / (documentHeight - windowHeight)) * 100;
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = scrollProgress + '%';
+            }
+        }
+
+        // Gallery Controls Functions
+        function toggleFrames() {
+            const frameToggle = document.getElementById('frame-toggle');
+            const spacingControls = document.getElementById('spacing-controls');
+            const toggleDot = document.getElementById('toggle-dot');
+            const galleryArtworks = document.querySelectorAll('.gallery-artwork');
+            
+            if (frameToggle.checked) {
+                // Frames ON
+                toggleDot.style.transform = 'translateX(16px)';
+                toggleDot.parentElement.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
+                spacingControls.style.opacity = '1';
+                spacingControls.style.pointerEvents = 'auto';
+                
+                // Enable metallic frames
+                galleryArtworks.forEach(artwork => {
+                    artwork.style.border = 'solid 10px';
+                    artwork.style.borderImage = 'linear-gradient(to bottom right, #56575a, #000) 1';
+                    artwork.style.boxShadow = '0 0 5px 0 rgba(0, 0, 0, 0.25) inset, 0 5px 10px 5px rgba(0, 0, 0, 0.25)';
+                    
+                    // Re-enable metallic inner border on images
+                    const artworkImage = artwork.querySelector('.artwork-image');
+                    if (artworkImage) {
+                        if (artworkImage.tagName === 'IMG') {
+                            artworkImage.style.border = 'groove 4px';
+                            artworkImage.style.borderBottomColor = '#56575a';
+                            artworkImage.style.borderLeftColor = '#2b2b2d';
+                            artworkImage.style.borderRightColor = '#2b2b2d';
+                            artworkImage.style.borderTopColor = '#000';
+                        }
+                    }
+                });
+                
+                // Apply current spacing
+                const spacingSlider = document.getElementById('spacing-slider');
+                updateSpacing(spacingSlider.value);
+                
+            } else {
+                // Frames OFF
+                toggleDot.style.transform = 'translateX(0)';
+                toggleDot.parentElement.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                spacingControls.style.opacity = '0.3';
+                spacingControls.style.pointerEvents = 'none';
+                
+                // Remove metallic frames
+                galleryArtworks.forEach(artwork => {
+                    artwork.style.border = 'none';
+                    artwork.style.borderImage = 'none';
+                    artwork.style.boxShadow = 'none';
+                    
+                    // Remove inner border from images
+                    const artworkImage = artwork.querySelector('.artwork-image');
+                    if (artworkImage) {
+                        artworkImage.style.border = 'none';
+                    }
+                });
+                
+                // Set gap to 0 when frames are off
+                const galleryGrid = document.querySelector('.metallic-gallery-grid');
+                if (galleryGrid) {
+                    galleryGrid.style.gap = '0px';
+                }
+            }
+        }
+
+        function updateSpacing(value) {
+            const galleryGrid = document.querySelector('.metallic-gallery-grid');
+            if (galleryGrid) {
+                galleryGrid.style.gap = value + 'px';
+            }
         }
 
         // Initialize everything
@@ -1053,6 +1279,12 @@
                 updatePageLanguage('en');
                 console.log('Language set to English');
                 
+                // Initialize home navbar behavior
+                initHomeNavbarBehavior();
+                
+                // Initialize dynamic navbar
+                initDynamicNavbar();
+                
                 // Hide debug info after everything is loaded
                 setTimeout(() => {
                     debugInfo.style.display = 'none';
@@ -1060,24 +1292,9 @@
                 
             }, 200); // Give navbar.js time to load
             
-            // Listen to window scroll for museum header animation
+            // Listen to window scroll for navbar transitions
             window.addEventListener('scroll', function() {
-                // Museum header animation
-                const museumHeader = document.getElementById('museum-header');
-                const gallerySection = document.getElementById('gallery-section');
-                
-                if (gallerySection && museumHeader) {
-                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-                    const galleryTop = gallerySection.offsetTop;
-                    const headerHeight = 100;
-                    const scrollThreshold = galleryTop - headerHeight;
-                    
-                    if (scrollY > scrollThreshold) {
-                        museumHeader.classList.add('absorbed');
-                    } else {
-                        museumHeader.classList.remove('absorbed');
-                    }
-                }
+                // No more museum header animation - removed
             });
             
             // Close mobile artist info when clicking outside
