@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - The Infinite Canvas</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="navbar.js"></script>
+    <script src="footer.js"></script>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         .scrollbar-hide {
             -ms-overflow-style: none;
@@ -97,6 +101,21 @@
         .menu-overlay {
             backdrop-filter: blur(10px);
         }
+
+        /* Loading spinner */
+        .spinner {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         
         /* Responsive Typography */
         @media (max-width: 768px) {
@@ -110,6 +129,7 @@
 <body class="min-h-screen bg-gradient-to-br from-zinc-50 via-stone-50 to-zinc-100 text-zinc-800 font-light">
     
     <!-- Navbar will be inserted here by navbar.js -->
+    <div id="navbar-container"></div>
 
     <!-- Hero Section -->
     <section class="h-screen flex items-center justify-center relative overflow-hidden">
@@ -208,31 +228,32 @@
                             <select id="type" name="type" required 
                                     class="form-input w-full px-4 py-3 rounded-xl text-zinc-800 focus:outline-none">
                                 <option value="" id="option-select">Select an option</option>
-                                <option value="artist" id="option-artist">Artist Collaboration</option>
-                                <option value="partnership" id="option-partnership">Partnership</option>
-                                <option value="general" id="option-general">General Question</option>
-                                <option value="other" id="option-other">Other</option>
+                                <option value="🎨 Artist Application" id="option-artist">Artist Application</option>
+                                <option value="🤝 Partnership Inquiry" id="option-partnership">Partnership Inquiry</option>
+                                <option value="❓ General Question" id="option-general">General Question</option>
+                                <option value="📧 Other" id="option-other">Other</option>
                             </select>
                         </div>
                         
                         <div>
-                            <label for="portfolio" class="block text-sm font-medium text-zinc-700 mb-2" id="label-portfolio">Portfolio URL <span class="text-zinc-400">(optional)</span></label>
-                            <input type="url" id="portfolio" name="portfolio" 
+                            <label for="portfolio" class="block text-sm font-medium text-zinc-700 mb-2" id="label-portfolio">Portfolio / Social Media <span class="text-zinc-400">(optional)</span></label>
+                            <input type="text" id="portfolio" name="portfolio" 
                                    class="form-input w-full px-4 py-3 rounded-xl text-zinc-800 placeholder-zinc-500 focus:outline-none"
-                                   placeholder="https://yourportfolio.com">
+                                   placeholder="@instagram, portfolio.com, or any social handle">
                         </div>
                         
                         <div>
                             <label for="message" class="block text-sm font-medium text-zinc-700 mb-2" id="label-message">Message</label>
                             <textarea id="message" name="message" rows="6" required 
                                       class="form-input w-full px-4 py-3 rounded-xl text-zinc-800 placeholder-zinc-500 focus:outline-none resize-none"
-                                      placeholder="Tell us about your vision..."></textarea>
+                                      placeholder="What would you like to tell us?"></textarea>
                         </div>
                         
                         <button type="submit" 
-                                class="w-full bg-zinc-800 text-white py-4 px-6 rounded-xl font-light text-lg hover:bg-zinc-700 transition-colors duration-300"
+                                class="w-full bg-zinc-800 text-white py-4 px-6 rounded-xl font-light text-lg hover:bg-zinc-700 transition-colors duration-300 flex items-center justify-center space-x-2"
                                 id="submit-btn">
-                            Send Message
+                            <span id="submit-text">Send Message</span>
+                            <div id="submit-spinner" class="spinner hidden"></div>
                         </button>
                     </form>
                     
@@ -241,6 +262,14 @@
                         <div class="flex items-center space-x-2">
                             <i class="fas fa-check-circle text-green-600"></i>
                             <span class="text-green-700" id="success-text">Thank you! Your message has been sent successfully.</span>
+                        </div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="error-message" class="hidden mt-6 p-4 bg-red-100 border border-red-300 rounded-xl">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-exclamation-circle text-red-600"></i>
+                            <span class="text-red-700" id="error-text">Sorry, there was an error sending your message. Please try again.</span>
                         </div>
                     </div>
                 </div>
@@ -268,90 +297,13 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-16 px-8 border-t border-zinc-200/50">
-        <div class="max-w-6xl mx-auto text-center">
-            <h3 class="text-2xl font-extralight mb-6 tracking-wider">The Infinite Canvas</h3>
-            <p class="text-zinc-500 text-sm tracking-widest uppercase mb-8" id="footer-text">
-                Where dreams become art
-            </p>
-            <div class="flex items-center justify-center space-x-8 text-xs text-zinc-400 tracking-wider uppercase">
-                <span id="footer-follow">Follow</span>
-                <a href="#" class="hover:text-zinc-600 transition-colors">TikTok</a>
-                <a href="#" class="hover:text-zinc-600 transition-colors">Instagram</a>
-                <span>—</span>
-                <span>2025</span>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer will be inserted here by footer.js -->
+    <div id="footer-container"></div>
 
     <script>
-        // Page-specific translations
-        const pageTranslations = {
-            en: {
-                pageTitle: 'Get in Touch',
-                pageSubtitle: 'Join the Creative Revolution',
-                collaborationLabel: 'Collaboration',
-                scrollHint: 'Scroll to connect',
-                contactTitle: 'Let\'s Create Together',
-                contactText: 'Are you an artist looking to push the boundaries of creativity? Join us in redefining what collaborative art can be in the digital age.',
-                artistTitle: 'For Artists',
-                artistDesc: 'Collaborative opportunities',
-                partnerTitle: 'Partnerships',
-                partnerDesc: 'Brand collaborations & sponsorships',
-                generalTitle: 'General Inquiries',
-                generalDesc: 'Questions about the project',
-                labelName: 'Name',
-                labelEmail: 'Email',
-                labelType: 'Inquiry Type',
-                labelPortfolio: 'Portfolio URL',
-                labelMessage: 'Message',
-                optionSelect: 'Select an option',
-                optionArtist: 'Artist Collaboration',
-                optionPartnership: 'Partnership',
-                optionGeneral: 'General Question',
-                optionOther: 'Other',
-                submitBtn: 'Send Message',
-                successText: 'Thank you! Your message has been sent successfully.',
-                socialTitle: 'Follow Our Journey',
-                socialDesc: 'Stay updated with the latest artworks and behind-the-scenes content',
-                footerText: 'Where dreams become art',
-                footerFollow: 'Follow'
-            },
-            de: {
-                pageTitle: 'Kontakt',
-                pageSubtitle: 'Werde Teil der kreativen Revolution',
-                collaborationLabel: 'Kollaboration',
-                scrollHint: 'Scrollen um zu verbinden',
-                contactTitle: 'Lass uns zusammen kreativ werden',
-                contactText: 'Bist du ein Künstler, der die Grenzen der Kreativität erweitern möchte? Hilf uns dabei, neu zu definieren, was kollaborative Kunst im digitalen Zeitalter sein kann.',
-                artistTitle: 'Für Künstler',
-                artistDesc: 'Kollaborative Möglichkeiten',
-                partnerTitle: 'Partnerschaften',
-                partnerDesc: 'Marken-Kollaborationen & Sponsoring',
-                generalTitle: 'Allgemeine Anfragen',
-                generalDesc: 'Fragen zum Projekt',
-                labelName: 'Name',
-                labelEmail: 'E-Mail',
-                labelType: 'Art der Anfrage',
-                labelPortfolio: 'Portfolio URL',
-                labelMessage: 'Nachricht',
-                optionSelect: 'Option wählen',
-                optionArtist: 'Künstler Kollaboration',
-                optionPartnership: 'Partnerschaft',
-                optionGeneral: 'Allgemeine Frage',
-                optionOther: 'Sonstiges',
-                submitBtn: 'Nachricht senden',
-                successText: 'Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.',
-                socialTitle: 'Folge unserer Reise',
-                socialDesc: 'Bleib auf dem Laufenden mit den neuesten Kunstwerken und Behind-the-Scenes Inhalten',
-                footerText: 'Wo Träume zu Kunst werden',
-                footerFollow: 'Folgen'
-            }
-        };
-
-        // Page-specific language update function
-        function updatePageLanguage(lang) {
+        // Make updatePageLanguage globally accessible for navbar
+        window.updatePageLanguage = function(lang) {
+            window.currentLanguage = lang;
             const t = pageTranslations[lang];
             
             document.getElementById('page-title').textContent = t.pageTitle;
@@ -376,47 +328,201 @@
             document.getElementById('option-partnership').textContent = t.optionPartnership;
             document.getElementById('option-general').textContent = t.optionGeneral;
             document.getElementById('option-other').textContent = t.optionOther;
-            document.getElementById('submit-btn').textContent = t.submitBtn;
+            document.getElementById('submit-text').textContent = t.submitBtn;
             document.getElementById('success-text').textContent = t.successText;
+            document.getElementById('error-text').textContent = t.errorText;
             document.getElementById('social-title').textContent = t.socialTitle;
             document.getElementById('social-desc').textContent = t.socialDesc;
-            document.getElementById('footer-text').textContent = t.footerText;
-            document.getElementById('footer-follow').textContent = t.footerFollow;
-        }
 
-        // Form handling
+            // Update placeholders
+            document.getElementById('message').placeholder = t.messagePlaceholder;
+            document.getElementById('portfolio').placeholder = t.portfolioPlaceholder;
+            
+            // Update footer language
+            if (typeof updateFooterLanguage === 'function') {
+                updateFooterLanguage(lang);
+            }
+        };
+
+        // Page-specific translations
+        const pageTranslations = {
+            en: {
+                pageTitle: 'Get in Touch',
+                pageSubtitle: 'Join the Creative Revolution',
+                collaborationLabel: 'Collaboration',
+                scrollHint: 'Scroll to connect',
+                contactTitle: 'Let\'s Create Together',
+                contactText: 'Are you an artist looking to push the boundaries of creativity? Join us in redefining what collaborative art can be in the digital age.',
+                artistTitle: 'For Artists',
+                artistDesc: 'Collaborative opportunities',
+                partnerTitle: 'Partnerships',
+                partnerDesc: 'Brand collaborations & sponsorships',
+                generalTitle: 'General Inquiries',
+                generalDesc: 'Questions about the project',
+                labelName: 'Name',
+                labelEmail: 'Email',
+                labelType: 'Inquiry Type',
+                labelPortfolio: 'Portfolio / Social Media',
+                labelMessage: 'Message',
+                optionSelect: 'Select an option',
+                optionArtist: 'Artist Application',
+                optionPartnership: 'Partnership Inquiry',
+                optionGeneral: 'General Question',
+                optionOther: 'Other',
+                submitBtn: 'Send Message',
+                sendingBtn: 'Sending...',
+                successText: 'Thank you! Your message has been sent successfully.',
+                errorText: 'Sorry, there was an error sending your message. Please try again.',
+                socialTitle: 'Follow Our Journey',
+                socialDesc: 'Stay updated with the latest artworks and behind-the-scenes content',
+                messagePlaceholder: 'What would you like to tell us?',
+                portfolioPlaceholder: '@instagram, portfolio.com, or any social handle'
+            },
+            de: {
+                pageTitle: 'Kontakt',
+                pageSubtitle: 'Werde Teil der kreativen Revolution',
+                collaborationLabel: 'Kollaboration',
+                scrollHint: 'Scrollen um zu verbinden',
+                contactTitle: 'Lass uns zusammen kreativ werden',
+                contactText: 'Bist du ein Künstler, der die Grenzen der Kreativität erweitern möchte? Hilf uns dabei, neu zu definieren, was kollaborative Kunst im digitalen Zeitalter sein kann.',
+                artistTitle: 'Für Künstler',
+                artistDesc: 'Kollaborative Möglichkeiten',
+                partnerTitle: 'Partnerschaften',
+                partnerDesc: 'Marken-Kollaborationen & Sponsoring',
+                generalTitle: 'Allgemeine Anfragen',
+                generalDesc: 'Fragen zum Projekt',
+                labelName: 'Name',
+                labelEmail: 'E-Mail',
+                labelType: 'Art der Anfrage',
+                labelPortfolio: 'Portfolio / Social Media',
+                labelMessage: 'Nachricht',
+                optionSelect: 'Option wählen',
+                optionArtist: 'Künstler Bewerbung',
+                optionPartnership: 'Partnerschaftsanfrage',
+                optionGeneral: 'Allgemeine Frage',
+                optionOther: 'Sonstiges',
+                submitBtn: 'Nachricht senden',
+                sendingBtn: 'Wird gesendet...',
+                successText: 'Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.',
+                errorText: 'Entschuldigung, beim Senden Ihrer Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+                socialTitle: 'Folge unserer Reise',
+                socialDesc: 'Bleib auf dem Laufenden mit den neuesten Kunstwerken und Behind-the-Scenes Inhalten',
+                messagePlaceholder: 'Was möchten Sie uns mitteilen?',
+                portfolioPlaceholder: '@instagram, portfolio.de, oder jeder Social Handle'
+            }
+        };
+
+        // Initialize EmailJS
+        (function() {
+            emailjs.init(window.EMAIL_CONFIG.publicKey);
+        })();
+
+        // Form handling with EmailJS
         function handleFormSubmit(e) {
             e.preventDefault();
             
-            // Simulate form submission
+            const form = e.target;
             const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const submitSpinner = document.getElementById('submit-spinner');
             const successMessage = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
             
-            const sendingText = currentLanguage === 'en' ? 'Sending...' : 'Wird gesendet...';
-            const originalText = currentLanguage === 'en' ? 'Send Message' : 'Nachricht senden';
+            // Hide previous messages
+            successMessage.classList.add('hidden');
+            errorMessage.classList.add('hidden');
             
-            submitBtn.textContent = sendingText;
+            // Show loading state
+            const originalText = submitText.textContent;
+            const sendingText = window.currentLanguage === 'en' ? 'Sending...' : 'Wird gesendet...';
+            
+            submitText.textContent = sendingText;
+            submitSpinner.classList.remove('hidden');
             submitBtn.disabled = true;
             
-            setTimeout(() => {
-                successMessage.classList.remove('hidden');
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                
-                // Reset form
-                document.getElementById('contact-form').reset();
-                
-                // Hide success message after 5 seconds
-                setTimeout(() => {
-                    successMessage.classList.add('hidden');
-                }, 5000);
-            }, 1500);
+            // Prepare email data
+            const formData = new FormData(form);
+            const inquiryType = formData.get('type');
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const portfolio = formData.get('portfolio') || 'Not provided';
+            const message = formData.get('message');
+            
+            // Format the email
+            const emailParams = {
+                to_email: 'infinite.canvasproject@gmail.com',
+                subject: `${inquiryType} - ${name}`,
+                from_name: name,
+                from_email: email,
+                inquiry_type: inquiryType,
+                portfolio: portfolio,
+                message: message,
+                formatted_message: `
+Name: ${name}
+Email: ${email}
+Inquiry Type: ${inquiryType}
+Portfolio/Social: ${portfolio}
+
+Message:
+${message}
+
+---
+Sent from The Infinite Canvas Contact Form
+                `.trim()
+            };
+            
+            // Send email via EmailJS
+            emailjs.send(window.EMAIL_CONFIG.serviceId, window.EMAIL_CONFIG.templateId, emailParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Show success message
+                    successMessage.classList.remove('hidden');
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        successMessage.classList.add('hidden');
+                    }, 5000);
+                    
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    
+                    // Show error message
+                    errorMessage.classList.remove('hidden');
+                    
+                    // Hide error message after 5 seconds
+                    setTimeout(() => {
+                        errorMessage.classList.add('hidden');
+                    }, 5000);
+                })
+                .finally(function() {
+                    // Reset button state
+                    submitText.textContent = originalText;
+                    submitSpinner.classList.add('hidden');
+                    submitBtn.disabled = false;
+                });
         }
+
+        // Global variable for current language
+        window.currentLanguage = 'en';
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize navbar with current page
-            initNavbar('contact');
+            if (typeof initNavbar === 'function') {
+                initNavbar('contact');
+            }
+            
+            // Initialize footer with light theme
+            if (typeof initFooter === 'function') {
+                initFooter('light');
+            }
+            
+            // Set default language
+            updatePageLanguage('en');
             
             // Add form event listener
             document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);

@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timeline - The Infinite Canvas</title>
+    <title>Rules & Guidelines - The Infinite Canvas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="navbar.js"></script>
+    <script src="footer.js"></script>
     <style>
         .scrollbar-hide {
             -ms-overflow-style: none;
@@ -62,7 +63,7 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
         
-        /* Burger Menu Styles */
+        /* Burger Menu Styles - FIXED FOR LIGHT BACKGROUNDS */
         .burger-menu {
             background: linear-gradient(135deg, 
                 rgba(255, 255, 255, 0.1),
@@ -75,6 +76,109 @@
         
         .menu-overlay {
             backdrop-filter: blur(10px);
+        }
+
+        /* Fix burger button visibility on light backgrounds */
+        .glass-navbar.scrolled .navbar-text {
+            color: rgba(0, 0, 0, 0.8) !important;
+        }
+
+        /* Ensure burger icon is always visible */
+        .burger-btn-icon {
+            transition: color 0.3s ease;
+        }
+        
+        .glass-navbar.scrolled .burger-btn-icon {
+            color: rgba(0, 0, 0, 0.8) !important;
+        }
+
+        /* Highlight boxes for important info */
+        .highlight-box {
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.08),
+                rgba(59, 130, 246, 0.04)
+            );
+            border-left: 4px solid rgba(59, 130, 246, 0.6);
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, 
+                rgba(239, 68, 68, 0.08),
+                rgba(239, 68, 68, 0.04)
+            );
+            border-left: 4px solid rgba(239, 68, 68, 0.6);
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, 
+                rgba(34, 197, 94, 0.08),
+                rgba(34, 197, 94, 0.04)
+            );
+            border-left: 4px solid rgba(34, 197, 94, 0.6);
+        }
+
+        /* Format examples styling */
+        .format-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .format-example {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05)
+            );
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .format-example:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Ratio Calculator Styles */
+        .calculator-box {
+            background: linear-gradient(135deg, 
+                rgba(168, 85, 247, 0.08),
+                rgba(168, 85, 247, 0.04)
+            );
+            border-left: 4px solid rgba(168, 85, 247, 0.6);
+        }
+
+        .calc-input {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.15),
+                rgba(255, 255, 255, 0.08)
+            );
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .calc-input:focus {
+            outline: none;
+            border-color: rgba(168, 85, 247, 0.6);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+        }
+
+        .calc-result {
+            background: linear-gradient(135deg, 
+                rgba(34, 197, 94, 0.15),
+                rgba(34, 197, 94, 0.08)
+            );
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        /* Important notice styling - ENHANCED */
+        .important-notice {
+            background: linear-gradient(135deg, 
+                rgba(251, 146, 60, 0.15),
+                rgba(251, 146, 60, 0.08)
+            );
+            border: 2px solid rgba(251, 146, 60, 0.4);
+            box-shadow: 0 4px 20px rgba(251, 146, 60, 0.1);
         }
         
         /* Responsive Typography */
@@ -89,267 +193,534 @@
 <body class="min-h-screen bg-gradient-to-br from-zinc-50 via-stone-50 to-zinc-100 text-zinc-800 font-light">
     
     <!-- Navbar will be inserted here by navbar.js -->
+    <div id="navbar-container"></div>
 
     <!-- Hero Section -->
     <section class="h-screen flex items-center justify-center relative overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-br from-zinc-100/50 to-stone-200/50"></div>
         <div class="relative z-10 text-center max-w-4xl mx-auto px-8">
             <h1 class="text-6xl md:text-8xl font-extralight mb-8 tracking-[-0.02em] leading-none" id="page-title">
-                Project Timeline
+                Rules & Guidelines
             </h1>
             <p class="text-xl md:text-2xl font-light text-zinc-600 mb-12 leading-relaxed" id="page-subtitle">
-                From Concept to Community
+                How to join The Infinite Canvas
             </p>
             <div class="flex items-center justify-center space-x-8 text-sm tracking-widest uppercase text-zinc-500">
                 <span>2025</span>
                 <span>—</span>
-                <span id="journey-label">The Journey</span>
+                <span id="guidelines-label">Guidelines</span>
                 <span>—</span>
-                <span>Digital</span>
+                <span>Community</span>
             </div>
         </div>
         
         <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-center">
-            <p class="text-sm text-zinc-500 mb-4 tracking-widest uppercase" id="scroll-hint">Scroll to explore</p>
+            <p class="text-sm text-zinc-500 mb-4 tracking-widest uppercase" id="scroll-hint">Scroll to learn more</p>
             <i class="fas fa-arrow-down text-zinc-400 animate-bounce"></i>
         </div>
     </section>
 
-    <!-- Project Timeline -->
-    <section class="py-32 px-8">
+    <!-- Project Overview -->
+    <section class="py-16 px-8">
         <div class="max-w-4xl mx-auto">
-            <div class="relative">
-                <!-- Timeline Line -->
-                <div class="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-zinc-300 via-zinc-400 to-zinc-300 transform -translate-x-1/2"></div>
-                
-                <div class="space-y-16">
-                    <!-- Phase 1 -->
-                    <div class="relative flex items-center">
-                        <div class="flex-1 text-right pr-8">
-                            <div class="glass-element rounded-2xl p-6 mr-4">
-                                <h3 class="text-xl font-light mb-2" id="phase1-title">Conception</h3>
-                                <p class="text-zinc-600 mb-3" id="phase1-desc">The concept for The Infinite Canvas is born</p>
-                                <div class="text-sm text-zinc-500 font-medium">Early 2025</div>
-                                <div class="mt-4 text-xs text-zinc-400" id="phase1-detail">
-                                    Initial brainstorming and concept development for a collaborative art platform that breaks traditional boundaries.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="absolute left-1/2 w-4 h-4 bg-zinc-400 rounded-full transform -translate-x-1/2 z-10"></div>
-                        <div class="flex-1 pl-8"></div>
-                    </div>
-                    
-                    <!-- Phase 2 - Current -->
-                    <div class="relative flex items-center">
-                        <div class="flex-1 pr-8"></div>
-                        <div class="absolute left-1/2 w-6 h-6 bg-gradient-to-r from-zinc-600 to-zinc-700 rounded-full transform -translate-x-1/2 z-10 shadow-lg">
-                            <div class="absolute inset-1 bg-white rounded-full animate-pulse"></div>
-                        </div>
-                        <div class="flex-1 text-left pl-8">
-                            <div class="glass-element rounded-2xl p-6 ml-4 border-l-4 border-zinc-600">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <h3 class="text-xl font-light" id="phase2-title">Artist Recruitment</h3>
-                                    <span class="px-2 py-1 bg-zinc-800 text-white text-xs rounded-full" id="current-label">Current</span>
-                                </div>
-                                <p class="text-zinc-600 mb-3" id="phase2-desc">Finding talented artists and planning first artworks</p>
-                                <div class="text-sm text-zinc-500 font-medium">Until August 2025</div>
-                                <div class="mt-4 text-xs text-zinc-400" id="phase2-detail">
-                                    Reaching out to digital artists, building relationships, and creating the first collaborative pieces that will define the project.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Phase 3 -->
-                    <div class="relative flex items-center">
-                        <div class="flex-1 text-right pr-8">
-                            <div class="glass-element rounded-2xl p-6 mr-4 opacity-75">
-                                <h3 class="text-xl font-light mb-2" id="phase3-title">Launch</h3>
-                                <p class="text-zinc-600 mb-3" id="phase3-desc">First artworks go live on TikTok</p>
-                                <div class="text-sm text-zinc-500 font-medium">Mid August 2025</div>
-                                <div class="mt-4 text-xs text-zinc-400" id="phase3-detail">
-                                    The inaugural release of collaborative artworks, introducing the world to the infinite canvas concept.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="absolute left-1/2 w-4 h-4 bg-zinc-300 rounded-full transform -translate-x-1/2 z-10"></div>
-                        <div class="flex-1 pl-8"></div>
-                    </div>
-                    
-                    <!-- Phase 4 -->
-                    <div class="relative flex items-center">
-                        <div class="flex-1 pr-8"></div>
-                        <div class="absolute left-1/2 w-4 h-4 bg-zinc-300 rounded-full transform -translate-x-1/2 z-10"></div>
-                        <div class="flex-1 text-left pl-8">
-                            <div class="glass-element rounded-2xl p-6 ml-4 opacity-75">
-                                <h3 class="text-xl font-light mb-2" id="phase4-title">Community Building</h3>
-                                <p class="text-zinc-600 mb-3" id="phase4-desc">Growing a vibrant artist community</p>
-                                <div class="text-sm text-zinc-500 font-medium">Ongoing</div>
-                                <div class="mt-4 text-xs text-zinc-400" id="phase4-detail">
-                                    Expanding the network of participating artists and fostering a sustainable creative ecosystem.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Phase 5 -->
-                    <div class="relative flex items-center">
-                        <div class="flex-1 text-right pr-8">
-                            <div class="glass-element rounded-2xl p-6 mr-4 opacity-50">
-                                <h3 class="text-xl font-light mb-2" id="phase5-title">Global Expansion</h3>
-                                <p class="text-zinc-600 mb-3" id="phase5-desc">International artist collaborations</p>
-                                <div class="text-sm text-zinc-500 font-medium">2026</div>
-                                <div class="mt-4 text-xs text-zinc-400" id="phase5-detail">
-                                    Connecting artists across continents to create truly global collaborative artworks.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="absolute left-1/2 w-4 h-4 bg-zinc-200 rounded-full transform -translate-x-1/2 z-10"></div>
-                        <div class="flex-1 pl-8"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-32 px-8 bg-gradient-to-br from-zinc-100/30 to-stone-100/30">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-extralight text-center mb-16 tracking-wide" id="current-stats">Current Progress</h2>
+            <h2 class="text-4xl font-extralight mb-12 text-center" id="overview-title">What is The Infinite Canvas?</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="glass-element rounded-2xl p-8 text-center">
-                    <div class="text-4xl font-extralight text-zinc-800 mb-2">12</div>
-                    <div class="text-sm tracking-widest uppercase text-zinc-500" id="stat-artists">Artists Contacted</div>
+            <div class="highlight-box glass-element rounded-2xl p-8 mb-12">
+                <div class="flex items-start space-x-4">
+                    <i class="fas fa-video text-blue-500 text-2xl mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-light mb-3" id="tiktok-title">TikTok Art Project</h3>
+                        <p class="text-zinc-600 leading-relaxed" id="tiktok-description">
+                            The original artwork is created on TikTok @The-infiniteCanvas. The account feed assembles the artwork image by image, creating an endless collaborative masterpiece where each piece builds upon the last.
+                        </p>
+                    </div>
                 </div>
-                
-                <div class="glass-element rounded-2xl p-8 text-center">
-                    <div class="text-4xl font-extralight text-zinc-800 mb-2">3</div>
-                    <div class="text-sm tracking-widest uppercase text-zinc-500" id="stat-confirmed">Confirmed Participants</div>
-                </div>
-                
-                <div class="glass-element rounded-2xl p-8 text-center">
-                    <div class="text-4xl font-extralight text-zinc-800 mb-2">18</div>
-                    <div class="text-sm tracking-widest uppercase text-zinc-500" id="stat-days">Days Until Launch</div>
+            </div>
+
+            <div class="success-box glass-element rounded-2xl p-8">
+                <div class="flex items-start space-x-4">
+                    <i class="fas fa-gift text-green-500 text-2xl mt-1"></i>
+                    <div>
+                        <h3 class="text-xl font-light mb-3" id="free-title">Free to Participate</h3>
+                        <p class="text-zinc-600 leading-relaxed" id="free-description">
+                            Participation is completely free! Apply through our contact form and become part of this unique artistic journey.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-16 px-8 border-t border-zinc-200/50">
-        <div class="max-w-6xl mx-auto text-center">
-            <h3 class="text-2xl font-extralight mb-6 tracking-wider">The Infinite Canvas</h3>
-            <p class="text-zinc-500 text-sm tracking-widest uppercase mb-8" id="footer-text">
-                Where dreams become art
-            </p>
-            <div class="flex items-center justify-center space-x-8 text-xs text-zinc-400 tracking-wider uppercase">
-                <span id="footer-follow">Follow</span>
-                <a href="#" class="hover:text-zinc-600 transition-colors">TikTok</a>
-                <a href="#" class="hover:text-zinc-600 transition-colors">Instagram</a>
-                <span>—</span>
-                <span>2025</span>
+    <!-- Requirements Section -->
+    <section class="py-16 px-8 bg-gradient-to-br from-zinc-100/30 to-stone-100/30">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-extralight mb-16 text-center" id="requirements-title">Requirements</h2>
+            
+            <div class="space-y-8">
+                <!-- No AI Requirement -->
+                <div class="warning-box glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-ban text-red-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-xl font-light mb-3" id="no-ai-title">No AI Generated Art</h3>
+                            <p class="text-zinc-600 leading-relaxed" id="no-ai-description">
+                                Every image must be created by human hands. Whether digital, traditional painting, or any other medium - we celebrate human creativity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Format Requirement -->
+                <div class="glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-ruler-combined text-blue-500 text-2xl mt-1"></i>
+                        <div class="w-full">
+                            <h3 class="text-xl font-light mb-6" id="format-title">Exact Format Required</h3>
+                            <p class="text-zinc-600 mb-4" id="format-description">
+                                Every image must be drawn in the exact format: <strong>9:11.91 (width x height)</strong>
+                            </p>
+                            
+                            <!-- ENHANCED Important Notice -->
+                            <div class="important-notice rounded-xl p-4 mb-6">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-exclamation-triangle text-orange-500 text-lg"></i>
+                                    <p class="text-base font-medium text-zinc-700" id="format-note">
+                                        <strong>Important:</strong> The sizes below are just examples - you can choose any size as long as the 9:11.91 ratio is maintained.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Ratio Calculator -->
+                            <div class="calculator-box glass-element rounded-xl p-6 mb-6">
+                                <div class="flex items-center space-x-3 mb-4">
+                                    <i class="fas fa-calculator text-purple-500 text-lg"></i>
+                                    <h4 class="text-lg font-light" id="calculator-title">Ratio Calculator</h4>
+                                </div>
+                                <p class="text-sm text-zinc-600 mb-4" id="calculator-description">
+                                    Enter your desired width and get the correct height automatically
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                                    <div>
+                                        <label class="block text-sm font-medium text-zinc-700 mb-2" id="width-label">Width</label>
+                                        <input type="number" 
+                                               id="width-input" 
+                                               class="calc-input w-full px-4 py-3 rounded-lg text-zinc-800 placeholder-zinc-500" 
+                                               placeholder="Enter width">
+                                        <select id="width-unit" class="calc-input w-full px-4 py-2 rounded-lg text-zinc-800 mt-2">
+                                            <option value="cm">cm</option>
+                                            <option value="px">px</option>
+                                            <option value="inch">inch</option>
+                                        </select>
+                                    </div>
+                                    <div class="text-center">
+                                        <i class="fas fa-arrow-right text-purple-500 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-zinc-700 mb-2" id="height-label">Height (Calculated)</label>
+                                        <div id="height-result" class="calc-result w-full px-4 py-3 rounded-lg text-zinc-800 font-medium">
+                                            --
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Format Examples -->
+                            <div class="space-y-6">
+                                <div>
+                                    <h4 class="text-lg font-light mb-4" id="analog-title">Analog/Print Sizes:</h4>
+                                    <div class="format-grid">
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">9 × 11.91 cm</div>
+                                            </div>
+                                        </div>
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">10 × 13.23 cm</div>
+                                            </div>
+                                        </div>
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">18 × 23.82 cm</div>
+                                            </div>
+                                        </div>
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">20 × 26.47 cm</div>
+                                            </div>
+                                        </div>
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">40 × 52.93 cm</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-lg font-light mb-4" id="digital-title">Digital/Pixel Sizes:</h4>
+                                    <div class="format-grid">
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">300 × 397 px</div>
+                                            </div>
+                                        </div>
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">600 × 794 px</div>
+                                            </div>
+                                        </div>
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">1200 × 1588 px</div>
+                                            </div>
+                                        </div>
+                                        <div class="format-example rounded-lg p-4">
+                                            <div class="text-center">
+                                                <div class="text-lg font-medium text-zinc-800">1920 × 2541 px</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature Requirement -->
+                <div class="glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-signature text-purple-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-xl font-light mb-3" id="signature-title">Artist Signature Required</h3>
+                            <p class="text-zinc-600 leading-relaxed" id="signature-description">
+                                Every artist must sign their artwork. Your signature becomes part of the infinite canvas and helps preserve the collaborative history.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+    </section>
+
+    <!-- Tips & Tricks Section -->
+    <section class="py-16 px-8">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-extralight mb-16 text-center" id="tips-title">Tips & Tricks</h2>
+            
+            <div class="space-y-8">
+                <!-- Analog Artists Tip -->
+                <div class="glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-print text-indigo-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-xl font-light mb-3" id="analog-tip-title">For Analog Artists</h3>
+                            <p class="text-zinc-600 leading-relaxed" id="analog-tip-description">
+                                Print the adjacent images in the size you want to draw your own image. This helps achieve better transitions and continuity in the collaborative artwork.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transitions Tip -->
+                <div class="glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-link text-green-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-xl font-light mb-3" id="transitions-title">Perfect Transitions Not Required</h3>
+                            <p class="text-zinc-600 leading-relaxed" id="transitions-description">
+                                Transitions don't need to be 100% perfect! The better they work, the more beautiful the result, but imperfections add character to the collaborative piece.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Style Tip -->
+                <div class="glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-palette text-pink-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-xl font-light mb-3" id="style-title">Keep Your Unique Style</h3>
+                            <p class="text-zinc-600 leading-relaxed" id="style-description">
+                                Every artist should paint in their own style! The diversity of styles is what makes The Infinite Canvas special and dynamic.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-16 px-8 bg-gradient-to-br from-zinc-100/30 to-stone-100/30">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-extralight mb-16 text-center" id="process-title">How It Works</h2>
+            
+            <div class="space-y-8">
+                <!-- Time Limit -->
+                <div class="glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-clock text-orange-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-xl font-light mb-3" id="timeframe-title">7-Day Time Frame</h3>
+                            <p class="text-zinc-600 leading-relaxed" id="timeframe-description">
+                                When it's your turn, you have 7 days to complete and submit your artwork. If this timeframe is exceeded, the spot moves to the next artist to keep the project flowing.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- One Image Rule -->
+                <div class="glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-image text-blue-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-xl font-light mb-3" id="one-image-title">One Image Per Round</h3>
+                            <p class="text-zinc-600 leading-relaxed" id="one-image-description">
+                                Each artist creates one image initially, but can participate again later in the project. Early contributors who help launch the project may get priority for future rounds.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Credits -->
+                <div class="glass-element rounded-2xl p-8">
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-award text-yellow-500 text-2xl mt-1"></i>
+                        <div>
+                            <h3 class="text-xl font-light mb-3" id="credits-title">Artist Credits</h3>
+                            <p class="text-zinc-600 leading-relaxed" id="credits-description">
+                                Artists receive full credit for their work. On this website, hovering over your image shows your link. On TikTok, you'll be tagged and mentioned in captions, ensuring your contribution is always recognized.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Section -->
+    <section class="py-16 px-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-extralight mb-8" id="apply-title">Ready to Join?</h2>
+            <p class="text-xl text-zinc-600 mb-12 leading-relaxed" id="apply-description">
+                Apply through our contact form and become part of this unique collaborative art project.
+            </p>
+            
+            <div class="glass-element rounded-2xl p-8 max-w-2xl mx-auto">
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-light" id="welcome-title">All Art Forms Welcome</h3>
+                    <p class="text-zinc-600" id="welcome-description">
+                        Oil paintings, watercolors, digital art, sketches, mixed media - every artistic medium is welcome in The Infinite Canvas.
+                    </p>
+                    <div class="pt-6">
+                        <a href="contact.html" class="inline-flex items-center px-8 py-4 bg-zinc-800 text-white rounded-full font-light hover:bg-zinc-700 transition-colors">
+                            <span id="apply-button">Apply Now</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer will be inserted here by footer.js -->
+    <div id="footer-container"></div>
 
     <script>
-        // Page-specific translations
-        const pageTranslations = {
-            en: {
-                pageTitle: 'Project Timeline',
-                pageSubtitle: 'From Concept to Community',
-                journeyLabel: 'The Journey',
-                scrollHint: 'Scroll to explore',
-                phase1Title: 'Conception',
-                phase1Desc: 'The concept for The Infinite Canvas is born',
-                phase1Detail: 'Initial brainstorming and concept development for a collaborative art platform that breaks traditional boundaries.',
-                phase2Title: 'Artist Recruitment',
-                phase2Desc: 'Finding talented artists and planning first artworks',
-                phase2Detail: 'Reaching out to digital artists, building relationships, and creating the first collaborative pieces that will define the project.',
-                phase3Title: 'Launch',
-                phase3Desc: 'First artworks go live on TikTok',
-                phase3Detail: 'The inaugural release of collaborative artworks, introducing the world to the infinite canvas concept.',
-                phase4Title: 'Community Building',
-                phase4Desc: 'Growing a vibrant artist community',
-                phase4Detail: 'Expanding the network of participating artists and fostering a sustainable creative ecosystem.',
-                phase5Title: 'Global Expansion',
-                phase5Desc: 'International artist collaborations',
-                phase5Detail: 'Connecting artists across continents to create truly global collaborative artworks.',
-                currentLabel: 'Current',
-                currentStats: 'Current Progress',
-                statArtists: 'Artists Contacted',
-                statConfirmed: 'Confirmed Participants',
-                statDays: 'Days Until Launch',
-                footerText: 'Where dreams become art',
-                footerFollow: 'Follow'
-            },
-            de: {
-                pageTitle: 'Projekt Timeline',
-                pageSubtitle: 'Vom Konzept zur Community',
-                journeyLabel: 'Die Reise',
-                scrollHint: 'Scrollen um zu entdecken',
-                phase1Title: 'Ideengeburt',
-                phase1Desc: 'Das Konzept für The Infinite Canvas entsteht',
-                phase1Detail: 'Erste Brainstorming-Sessions und Konzeptentwicklung für eine kollaborative Kunstplattform, die traditionelle Grenzen durchbricht.',
-                phase2Title: 'Künstler Akquise',
-                phase2Desc: 'Talentierte Künstler finden und erste Bilder planen',
-                phase2Detail: 'Kontaktaufnahme mit digitalen Künstlern, Beziehungsaufbau und Erstellung der ersten kollaborativen Werke, die das Projekt definieren werden.',
-                phase3Title: 'Launch',
-                phase3Desc: 'Die ersten Kunstwerke gehen live auf TikTok',
-                phase3Detail: 'Die Premieren-Veröffentlichung kollaborativer Kunstwerke, die der Welt das Infinite Canvas Konzept vorstellt.',
-                phase4Title: 'Community Aufbau',
-                phase4Desc: 'Aufbau einer lebendigen Künstler-Community',
-                phase4Detail: 'Erweiterung des Netzwerks teilnehmender Künstler und Förderung eines nachhaltigen kreativen Ökosystems.',
-                phase5Title: 'Globale Expansion',
-                phase5Desc: 'Internationale Künstler-Kollaborationen',
-                phase5Detail: 'Künstler über Kontinente hinweg verbinden, um wirklich globale kollaborative Kunstwerke zu schaffen.',
-                currentLabel: 'Aktuell',
-                currentStats: 'Aktueller Fortschritt',
-                statArtists: 'Künstler Kontaktiert',
-                statConfirmed: 'Bestätigte Teilnehmer',
-                statDays: 'Tage bis Launch',
-                footerText: 'Wo Träume zu Kunst werden',
-                footerFollow: 'Folgen'
-            }
-        };
-
-        // Page-specific language update function
-        function updatePageLanguage(lang) {
+        // Make updatePageLanguage globally accessible
+        window.updatePageLanguage = function(lang) {
             const t = pageTranslations[lang];
             
             document.getElementById('page-title').textContent = t.pageTitle;
             document.getElementById('page-subtitle').textContent = t.pageSubtitle;
-            document.getElementById('journey-label').textContent = t.journeyLabel;
+            document.getElementById('guidelines-label').textContent = t.guidelinesLabel;
             document.getElementById('scroll-hint').textContent = t.scrollHint;
-            document.getElementById('phase1-title').textContent = t.phase1Title;
-            document.getElementById('phase1-desc').textContent = t.phase1Desc;
-            document.getElementById('phase1-detail').textContent = t.phase1Detail;
-            document.getElementById('phase2-title').textContent = t.phase2Title;
-            document.getElementById('phase2-desc').textContent = t.phase2Desc;
-            document.getElementById('phase2-detail').textContent = t.phase2Detail;
-            document.getElementById('phase3-title').textContent = t.phase3Title;
-            document.getElementById('phase3-desc').textContent = t.phase3Desc;
-            document.getElementById('phase3-detail').textContent = t.phase3Detail;
-            document.getElementById('phase4-title').textContent = t.phase4Title;
-            document.getElementById('phase4-desc').textContent = t.phase4Desc;
-            document.getElementById('phase4-detail').textContent = t.phase4Detail;
-            document.getElementById('phase5-title').textContent = t.phase5Title;
-            document.getElementById('phase5-desc').textContent = t.phase5Desc;
-            document.getElementById('phase5-detail').textContent = t.phase5Detail;
-            document.getElementById('current-label').textContent = t.currentLabel;
-            document.getElementById('current-stats').textContent = t.currentStats;
-            document.getElementById('stat-artists').textContent = t.statArtists;
-            document.getElementById('stat-confirmed').textContent = t.statConfirmed;
-            document.getElementById('stat-days').textContent = t.statDays;
-            document.getElementById('footer-text').textContent = t.footerText;
-            document.getElementById('footer-follow').textContent = t.footerFollow;
+            document.getElementById('overview-title').textContent = t.overviewTitle;
+            document.getElementById('tiktok-title').textContent = t.tiktokTitle;
+            document.getElementById('tiktok-description').textContent = t.tiktokDescription;
+            document.getElementById('free-title').textContent = t.freeTitle;
+            document.getElementById('free-description').textContent = t.freeDescription;
+            document.getElementById('requirements-title').textContent = t.requirementsTitle;
+            document.getElementById('no-ai-title').textContent = t.noAiTitle;
+            document.getElementById('no-ai-description').textContent = t.noAiDescription;
+            document.getElementById('format-title').textContent = t.formatTitle;
+            document.getElementById('format-description').innerHTML = t.formatDescription;
+            document.getElementById('format-note').innerHTML = t.formatNote;
+            document.getElementById('calculator-title').textContent = t.calculatorTitle;
+            document.getElementById('calculator-description').textContent = t.calculatorDescription;
+            document.getElementById('width-label').textContent = t.widthLabel;
+            document.getElementById('height-label').textContent = t.heightLabel;
+            document.getElementById('width-input').placeholder = t.widthPlaceholder;
+            document.getElementById('analog-title').textContent = t.analogTitle;
+            document.getElementById('digital-title').textContent = t.digitalTitle;
+            document.getElementById('signature-title').textContent = t.signatureTitle;
+            document.getElementById('signature-description').textContent = t.signatureDescription;
+            document.getElementById('tips-title').textContent = t.tipsTitle;
+            document.getElementById('analog-tip-title').textContent = t.analogTipTitle;
+            document.getElementById('analog-tip-description').textContent = t.analogTipDescription;
+            document.getElementById('transitions-title').textContent = t.transitionsTitle;
+            document.getElementById('transitions-description').textContent = t.transitionsDescription;
+            document.getElementById('style-title').textContent = t.styleTitle;
+            document.getElementById('style-description').textContent = t.styleDescription;
+            document.getElementById('process-title').textContent = t.processTitle;
+            document.getElementById('timeframe-title').textContent = t.timeframeTitle;
+            document.getElementById('timeframe-description').textContent = t.timeframeDescription;
+            document.getElementById('one-image-title').textContent = t.oneImageTitle;
+            document.getElementById('one-image-description').textContent = t.oneImageDescription;
+            document.getElementById('credits-title').textContent = t.creditsTitle;
+            document.getElementById('credits-description').textContent = t.creditsDescription;
+            document.getElementById('apply-title').textContent = t.applyTitle;
+            document.getElementById('apply-description').textContent = t.applyDescription;
+            document.getElementById('welcome-title').textContent = t.welcomeTitle;
+            document.getElementById('welcome-description').textContent = t.welcomeDescription;
+            document.getElementById('apply-button').textContent = t.applyButton;
+
+            // Update footer language
+            if (typeof updateFooterLanguage === 'function') {
+                updateFooterLanguage(lang);
+            }
+        };
+
+        // Page-specific translations
+        const pageTranslations = {
+            en: {
+                pageTitle: 'Rules & Guidelines',
+                pageSubtitle: 'How to join The Infinite Canvas',
+                guidelinesLabel: 'Guidelines',
+                scrollHint: 'Scroll to learn more',
+                overviewTitle: 'What is The Infinite Canvas?',
+                tiktokTitle: 'TikTok Art Project',
+                tiktokDescription: 'The original artwork is created on TikTok @The-infiniteCanvas. The account feed assembles the artwork image by image, creating an endless collaborative masterpiece where each piece builds upon the last.',
+                freeTitle: 'Free to Participate',
+                freeDescription: 'Participation is completely free! Apply through our contact form and become part of this unique artistic journey.',
+                requirementsTitle: 'Requirements',
+                noAiTitle: 'No AI Generated Art',
+                noAiDescription: 'Every image must be created by human hands. Whether digital, traditional painting, or any other medium - we celebrate human creativity.',
+                formatTitle: 'Exact Format Required',
+                formatDescription: 'Every image must be drawn in the exact format: <strong>9:11.91 (width x height)</strong>',
+                formatNote: '<strong>Important:</strong> The sizes below are just examples - you can choose any size as long as the 9:11.91 ratio is maintained.',
+                calculatorTitle: 'Ratio Calculator',
+                calculatorDescription: 'Enter your desired width and get the correct height automatically',
+                widthLabel: 'Width',
+                heightLabel: 'Height (Calculated)',
+                widthPlaceholder: 'Enter width',
+                analogTitle: 'Analog/Print Sizes:',
+                digitalTitle: 'Digital/Pixel Sizes:',
+                signatureTitle: 'Artist Signature Required',
+                signatureDescription: 'Every artist must sign their artwork. Your signature becomes part of the infinite canvas and helps preserve the collaborative history.',
+                tipsTitle: 'Tips & Tricks',
+                analogTipTitle: 'For Analog Artists',
+                analogTipDescription: 'Print the adjacent images in the size you want to draw your own image. This helps achieve better transitions and continuity in the collaborative artwork.',
+                transitionsTitle: 'Perfect Transitions Not Required',
+                transitionsDescription: 'Transitions don\'t need to be 100% perfect! The better they work, the more beautiful the result, but imperfections add character to the collaborative piece.',
+                styleTitle: 'Keep Your Unique Style',
+                styleDescription: 'Every artist should paint in their own style! The diversity of styles is what makes The Infinite Canvas special and dynamic.',
+                processTitle: 'How It Works',
+                timeframeTitle: '7-Day Time Frame',
+                timeframeDescription: 'When it\'s your turn, you have 7 days to complete and submit your artwork. If this timeframe is exceeded, the spot moves to the next artist to keep the project flowing.',
+                oneImageTitle: 'One Image Per Round',
+                oneImageDescription: 'Each artist creates one image initially, but can participate again later in the project. Early contributors who help launch the project may get priority for future rounds.',
+                creditsTitle: 'Artist Credits',
+                creditsDescription: 'Artists receive full credit for their work. On this website, hovering over your image shows your link. On TikTok, you\'ll be tagged and mentioned in captions, ensuring your contribution is always recognized.',
+                applyTitle: 'Ready to Join?',
+                applyDescription: 'Apply through our contact form and become part of this unique collaborative art project.',
+                welcomeTitle: 'All Art Forms Welcome',
+                welcomeDescription: 'Oil paintings, watercolors, digital art, sketches, mixed media - every artistic medium is welcome in The Infinite Canvas.',
+                applyButton: 'Apply Now'
+            },
+            de: {
+                pageTitle: 'Regeln & Richtlinien',
+                pageSubtitle: 'So nimmst du an The Infinite Canvas teil',
+                guidelinesLabel: 'Richtlinien',
+                scrollHint: 'Scrollen um mehr zu erfahren',
+                overviewTitle: 'Was ist The Infinite Canvas?',
+                tiktokTitle: 'TikTok Kunstprojekt',
+                tiktokDescription: 'Das originale Kunstwerk wird auf TikTok @The-infiniteCanvas erstellt. Der Account-Feed setzt das Kunstwerk Bild für Bild zusammen und erschafft ein endloses kollaboratives Meisterwerk, bei dem jedes Stück auf dem vorherigen aufbaut.',
+                freeTitle: 'Kostenlose Teilnahme',
+                freeDescription: 'Die Teilnahme ist völlig kostenlos! Bewirb dich über unser Kontaktformular und werde Teil dieser einzigartigen künstlerischen Reise.',
+                requirementsTitle: 'Voraussetzungen',
+                noAiTitle: 'Keine KI-generierte Kunst',
+                noAiDescription: 'Jedes Bild muss von Menschenhand erschaffen werden. Ob digital, traditionelle Malerei oder andere Medien - wir feiern menschliche Kreativität.',
+                formatTitle: 'Exaktes Format erforderlich',
+                formatDescription: 'Jedes Bild muss im exakten Format gezeichnet werden: <strong>9:11.91 (Breite x Höhe)</strong>',
+                formatNote: '<strong>Wichtig:</strong> Die unten stehenden Größen sind nur Beispiele - du kannst jede Größe wählen, solange das 9:11.91 Verhältnis eingehalten wird.',
+                calculatorTitle: 'Verhältnis-Rechner',
+                calculatorDescription: 'Gib deine gewünschte Breite ein und erhalte automatisch die korrekte Höhe',
+                widthLabel: 'Breite',
+                heightLabel: 'Höhe (Berechnet)',
+                widthPlaceholder: 'Breite eingeben',
+                analogTitle: 'Analog/Druck Größen:',
+                digitalTitle: 'Digital/Pixel Größen:',
+                signatureTitle: 'Künstler-Signatur erforderlich',
+                signatureDescription: 'Jeder Künstler muss sein Kunstwerk signieren. Deine Signatur wird Teil der unendlichen Leinwand und hilft, die kollaborative Geschichte zu bewahren.',
+                tipsTitle: 'Tipps & Tricks',
+                analogTipTitle: 'Für analoge Künstler',
+                analogTipDescription: 'Drucke die angrenzenden Bilder in der Größe aus, in der du dein eigenes Bild zeichnen möchtest. Das hilft, bessere Übergänge und Kontinuität im kollaborativen Kunstwerk zu erreichen.',
+                transitionsTitle: 'Perfekte Übergänge nicht erforderlich',
+                transitionsDescription: 'Übergänge müssen nicht zu 100% perfekt sein! Je besser sie gelingen, desto schöner das Ergebnis, aber Unperfektion verleiht dem kollaborativen Werk Charakter.',
+                styleTitle: 'Behalte deinen einzigartigen Stil',
+                styleDescription: 'Jeder Künstler soll in seinem eigenen Stil malen! Die Vielfalt der Stile macht The Infinite Canvas besonders und dynamisch.',
+                processTitle: 'So funktioniert es',
+                timeframeTitle: '7-Tage Zeitrahmen',
+                timeframeDescription: 'Wenn du dran bist, hast du 7 Tage Zeit, dein Kunstwerk zu vollenden und einzureichen. Wird dieser Zeitrahmen überschritten, geht der Platz an den nächsten Künstler über.',
+                oneImageTitle: 'Ein Bild pro Runde',
+                oneImageDescription: 'Jeder Künstler erstellt zunächst ein Bild, kann aber später wieder am Projekt teilnehmen. Frühe Mitwirkende, die beim Projektstart helfen, können Priorität für zukünftige Runden erhalten.',
+                creditsTitle: 'Künstler-Credits',
+                creditsDescription: 'Künstler erhalten vollständige Anerkennung für ihre Arbeit. Auf dieser Website zeigt das Hovern über dein Bild deinen Link. Auf TikTok wirst du verlinkt und in den Beschriftungen erwähnt.',
+                applyTitle: 'Bereit mitzumachen?',
+                applyDescription: 'Bewirb dich über unser Kontaktformular und werde Teil dieses einzigartigen kollaborativen Kunstprojekts.',
+                welcomeTitle: 'Alle Kunstformen willkommen',
+                welcomeDescription: 'Ölgemälde, Aquarelle, digitale Kunst, Skizzen, Mixed Media - jedes künstlerische Medium ist in The Infinite Canvas willkommen.',
+                applyButton: 'Jetzt bewerben'
+            }
+        };
+
+        // Ratio Calculator Logic
+        function initRatioCalculator() {
+            const widthInput = document.getElementById('width-input');
+            const widthUnit = document.getElementById('width-unit');
+            const heightResult = document.getElementById('height-result');
+            
+            const RATIO = 11.91 / 9; // height/width ratio
+            
+            function calculateHeight() {
+                const width = parseFloat(widthInput.value);
+                const unit = widthUnit.value;
+                
+                if (width && width > 0) {
+                    const height = width * RATIO;
+                    const roundedHeight = Math.round(height * 100) / 100; // Round to 2 decimal places
+                    
+                    heightResult.textContent = `${roundedHeight} ${unit}`;
+                    heightResult.classList.add('text-green-700');
+                } else {
+                    heightResult.textContent = '--';
+                    heightResult.classList.remove('text-green-700');
+                }
+            }
+            
+            widthInput.addEventListener('input', calculateHeight);
+            widthUnit.addEventListener('change', calculateHeight);
         }
 
-        // Initialize
+        // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize navbar with current page
-            initNavbar('timeline');
+            if (typeof initNavbar === 'function') {
+                initNavbar('timeline'); // Keep 'timeline' for navbar compatibility
+            }
+            
+            // Initialize footer with light theme
+            if (typeof initFooter === 'function') {
+                initFooter('light');
+            }
+            
+            // Set default language
+            updatePageLanguage('en');
+            
+            // Initialize ratio calculator
+            initRatioCalculator();
         });
     </script>
 </body>
