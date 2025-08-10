@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rechtliches - The Infinite Canvas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="navbar.js"></script>
+    <script src="footer.js"></script>
+    <script src="cookie-manager.js"></script>
+    <style>
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Glasmorphismus Effekte - wie auf anderen Seiten */
+        .glass-navbar {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.03),
+                rgba(255, 255, 255, 0.01)
+            );
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            height: 60px;
+        }
+        
+        .navbar-text {
+            color: rgba(255, 255, 255, 0.9);
+            transition: color 0.3s ease;
+        }
+        
+        .navbar-text.scrolled {
+            color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .glass-navbar.scrolled {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95),
+                rgba(255, 255, 255, 0.85)
+            );
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-element {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.08),
+                rgba(255, 255, 255, 0.02)
+            );
+            backdrop-filter: blur(15px) saturate(200%);
+            -webkit-backdrop-filter: blur(15px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .burger-menu {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05)
+            );
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .menu-overlay {
+            backdrop-filter: blur(10px);
+        }
+
+        .content-container {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95),
+                rgba(255, 255, 255, 0.9)
+            );
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.05)
+            );
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover, .nav-button.active {
+            background: linear-gradient(135deg, 
+                rgba(59, 130, 246, 0.2),
+                rgba(59, 130, 246, 0.1)
+            );
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .legal-content {
+            display: none;
+        }
+
+        .legal-content.active {
+            display: block;
+        }
+
+        .legal-content h1 {
+            color: #1f2937;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+
+        .legal-content h2 {
+            color: #374151;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .legal-content h3 {
+            color: #4b5563;
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .legal-content p, .legal-content li {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .legal-content ul, .legal-content ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .legal-content strong {
+            color: #374151;
+            font-weight: 600;
+        }
+
+        /* Responsive Typography */
+        @media (max-width: 768px) {
+            .glass-element {
+                backdrop-filter: blur(10px) saturate(150%);
+                -webkit-backdrop-filter: blur(10px) saturate(150%);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-zinc-50 via-stone-50 to-zinc-100 text-zinc-800 font-light">
+    
+    <!-- Navbar will be inserted here by navbar.js -->
+    <div id="navbar-container"></div>
+
+    <!-- Hero Section -->
+    <section class="h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-zinc-100/50 to-stone-200/50"></div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-8">
+            <h1 class="text-6xl md:text-8xl font-extralight mb-8 tracking-[-0.02em] leading-none" id="page-title">
+                Rechtliches
+            </h1>
+            <p class="text-xl md:text-2xl font-light text-zinc-600 mb-12 leading-relaxed" id="page-subtitle">
+                Impressum, Datenschutz & AGB
+            </p>
+            <div class="flex items-center justify-center space-x-8 text-sm tracking-widest uppercase text-zinc-500">
+                <span>2025</span>
+                <span>—</span>
+                <span id="legal-label">Legal</span>
+                <span>—</span>
+                <span>The Infinite Canvas</span>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-center">
+            <p class="text-sm text-zinc-500 mb-4 tracking-widest uppercase" id="scroll-hint">Scrollen für Details</p>
+            <i class="fas fa-arrow-down text-zinc-400 animate-bounce"></i>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto px-8 mb-8">
+        <div class="glass-element rounded-2xl p-4">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="showContent('impressum')" class="nav-button active px-6 py-3 rounded-lg text-zinc-700 font-medium" id="nav-impressum">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span class="nav-impressum-text">Impressum</span>
+                </button>
+                <button onclick="showContent('datenschutz')" class="nav-button px-6 py-3 rounded-lg text-zinc-700 font-medium" id="nav-datenschutz">
+                    <i class="fas fa-shield-alt mr-2"></i>
+                    <span class="nav-datenschutz-text">Datenschutz</span>
+                </button>
+                <button onclick="showContent('agb')" class="nav-button px-6 py-3 rounded-lg text-zinc-700 font-medium" id="nav-agb">
+                    <i class="fas fa-file-contract mr-2"></i>
+                    <span class="nav-agb-text">AGB</span>
+                </button>
+                <button onclick="showContent('cookies')" class="nav-button px-6 py-3 rounded-lg text-zinc-700 font-medium" id="nav-cookies">
+                    <i class="fas fa-cookie-bite mr-2"></i>
+                    <span class="nav-cookies-text">Cookie-Info</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Container -->
+    <main class="max-w-6xl mx-auto px-8 pb-16">
+        <div class="content-container rounded-2xl p-8">
+            
+            <!-- Impressum Content -->
+            <div id="content-impressum" class="legal-content active">
+                <h1 class="impressum-title">Impressum</h1>
+                
+                <h2 class="tmg-title">Angaben gemäß § 5 TMG</h2>
+                <p class="responsible-content"><strong class="responsible-label">Verantwortlich für den Inhalt:</strong><br>
+                Leonard Marx<br>
+                Immenstraße 13<br>
+                14542 Werder<br>
+                Deutschland</p>
+
+                <p class="contact-info"><strong class="contact-label">Kontakt:</strong><br>
+                E-Mail: infinite.canvasproject@gmail.com<br>
+                Website: www.the-infinitecanvas.com</p>
+
+                <h2 class="rstv-title">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+                <p class="rstv-content">Leonard Marx<br>
+                Immenstraße 13<br>
+                14542 Werder</p>
+
+                <h2 class="disclaimer-title">Haftungsausschluss</h2>
+                
+                <h3 class="content-liability-title">Haftung für Inhalte</h3>
+                <p class="content-liability-text">Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.</p>
+
+                <h3 class="links-liability-title">Haftung für Links</h3>
+                <p class="links-liability-text">Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+
+                <h3 class="copyright-title">Urheberrecht</h3>
+                <p class="copyright-text">Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+
+                <p class="artwork-note">Die auf dieser Website präsentierten Kunstwerke sind Eigentum der jeweiligen Künstler und werden mit deren Erlaubnis im Rahmen des "The Infinite Canvas" Projekts gezeigt.</p>
+            </div>
+
+            <!-- Datenschutz Content -->
+            <div id="content-datenschutz" class="legal-content">
+                <h1 class="privacy-title">Datenschutzerklärung</h1>
+                
+                <h2 class="privacy-overview-title">1. Datenschutz auf einen Blick</h2>
+                
+                <h3 class="general-notes-title">Allgemeine Hinweise</h3>
+                <p class="general-notes-text">Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.</p>
+
+                <h3 class="data-collection-title">Datenerfassung auf dieser Website</h3>
+                <p class="data-collection-text"><strong class="responsible-question">Wer ist verantwortlich für die Datenerfassung auf dieser Website?</strong><br>
+                Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.</p>
+
+                <h2 class="hosting-title">2. Hosting</h2>
+                <p class="hosting-text">Diese Website wird extern gehostet. Die personenbezogenen Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Hierbei kann es sich v. a. um IP-Adressen, Kontaktanfragen, Meta- und Kommunikationsdaten, Vertragsdaten, Kontaktdaten, Namen, Websitezugriffe und sonstige Daten, die über eine Website generiert werden, handeln.</p>
+
+                <h2 class="contact-form-title">3. Kontaktformular</h2>
+                <p class="contact-form-text">Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.</p>
+
+                <p class="processed-data-title"><strong>Verarbeitete Daten:</strong></p>
+                <ul class="processed-data-list">
+                    <li>Name</li>
+                    <li>E-Mail-Adresse</li>
+                    <li>Art der Anfrage</li>
+                    <li>Portfolio/Social Media Links (optional)</li>
+                    <li>Nachricht</li>
+                </ul>
+
+                <h2 class="emailjs-title">4. EmailJS</h2>
+                <p class="emailjs-text">Für die Übermittlung von Kontaktformularen nutzen wir den Dienst EmailJS. Die in das Kontaktformular eingegebenen Daten werden zur Bearbeitung Ihrer Anfrage per E-Mail an uns übermittelt.</p>
+
+                <h2 class="rights-title">5. Ihre Rechte</h2>
+                <p class="rights-text">Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung oder Löschung dieser Daten.</p>
+            </div>
+
+            <!-- AGB Content -->
+            <div id="content-agb" class="legal-content">
+                <h1 class="terms-title">Allgemeine Geschäftsbedingungen (AGB)</h1>
+                
+                <h2 class="scope-title">1. Geltungsbereich</h2>
+                <p class="scope-text">Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für die Nutzung der Website "The Infinite Canvas" und alle damit verbundenen Dienstleistungen. Betreiber ist Leonard Marx, Immenstraße 13, 14542 Werder.</p>
+
+                <h2 class="project-desc-title">2. Projektbeschreibung</h2>
+                <p class="project-desc-text">"The Infinite Canvas" ist ein kollaboratives Kunstprojekt, das hauptsächlich auf der Plattform TikTok (@the_infiniteCanvas) stattfindet. Diese Website dient als Galerie und Informationsplattform für das Projekt.</p>
+
+                <h3 class="project-scope-title">Projektumfang:</h3>
+                <ul class="project-scope-list">
+                    <li>Präsentation kollaborativer Kunstwerke</li>
+                    <li>Künstlerinformationen und -verlinkungen</li>
+                    <li>Bewerbungsplattform für interessierte Künstler</li>
+                    <li>Informationen über Projektregeln und Teilnahmebedingungen</li>
+                </ul>
+
+                <h2 class="artist-participation-title">3. Künstlerbeteiligung</h2>
+                
+                <h3 class="participation-conditions-title">3.1 Teilnahmebedingungen für Künstler</h3>
+                <ul class="participation-conditions-list">
+                    <li>Kunstwerke müssen im exakten Format 9:11.91 (Breite x Höhe) erstellt werden</li>
+                    <li>Keine KI-generierten Kunstwerke</li>
+                    <li>Künstlersignatur erforderlich</li>
+                    <li>7-Tage Frist zur Fertigstellung bei Zusage</li>
+                    <li>Menschliche Kreativität ist Voraussetzung</li>
+                </ul>
+
+                <h3 class="rights-obligations-title">3.2 Rechte und Pflichten der Künstler</h3>
+                <ul class="rights-obligations-list">
+                    <li>Künstler behalten das Urheberrecht an ihren Werken</li>
+                    <li>Künstler erteilen dem Projektbetreiber eine nicht-exklusive Lizenz zur Nutzung der Werke im Rahmen des Projekts</li>
+                    <li>Künstler sind für die Rechtmäßigkeit ihrer Einreichungen verantwortlich</li>
+                    <li>Künstler erhalten Namensnennung und Verlinkung</li>
+                </ul>
+
+                <h2 class="disclaimer-terms-title">4. Haftungsausschluss</h2>
+                <p class="disclaimer-terms-text">Wir übernehmen keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Informationen. Für Inhalte externer Websites (Künstlerprofile, Social Media) übernehmen wir keine Verantwortung.</p>
+
+                <h2 class="dispute-resolution-title">5. Streitbeilegung</h2>
+                <p class="dispute-resolution-text">Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts. Ausschließlicher Gerichtsstand ist Potsdam, soweit gesetzlich zulässig.</p>
+            </div>
+
+            <!-- Cookie Info Content -->
+            <div id="content-cookies" class="legal-content">
+                <h1 class="cookie-info-title">Cookie-Informationen</h1>
+                
+                <h2 class="what-cookies-title">Was sind Cookies?</h2>
+                <p class="what-cookies-text">Cookies sind kleine Textdateien, die von Websites auf Ihrem Computer oder Mobilgerät gespeichert werden. Sie helfen uns dabei, die Website zu verbessern und Ihnen eine bessere Nutzererfahrung zu bieten.</p>
+
+                <h2 class="which-cookies-title">Welche Cookies verwenden wir?</h2>
+                
+                <h3 class="essential-cookies-title">Notwendige Cookies</h3>
+                <p class="essential-cookies-text">Diese Cookies sind für das Funktionieren der Website unbedingt erforderlich und können nicht deaktiviert werden. Sie ermöglichen grundlegende Funktionen wie Sicherheit, Netzwerkmanagement und Zugänglichkeit.</p>
+
+                <h3 class="functional-cookies-title">Funktionale Cookies</h3>
+                <p class="functional-cookies-text">Diese Cookies ermöglichen erweiterte Funktionen und Personalisierung, wie:</p>
+                <ul class="functional-cookies-list">
+                    <li>Speicherung Ihrer Spracheinstellungen</li>
+                    <li>Speicherung von Formularinhalten</li>
+                    <li>Verbesserung der Benutzerfreundlichkeit</li>
+                </ul>
+
+                <h3 class="analytics-cookies-title">Analyse Cookies</h3>
+                <p class="analytics-cookies-text">Diese Cookies helfen uns zu verstehen, wie Besucher mit der Website interagieren, indem sie anonyme Informationen sammeln und melden:</p>
+                <ul class="analytics-cookies-list">
+                    <li>Anzahl der Besucher</li>
+                    <li>Meist besuchte Seiten</li>
+                    <li>Verweildauer auf der Website</li>
+                </ul>
+
+                <h2 class="cookie-settings-title">Ihre Cookie-Einstellungen</h2>
+                <p class="cookie-settings-text">Sie können Ihre Cookie-Einstellungen jederzeit ändern. Klicken Sie auf den Button unten, um Ihre Präferenzen zu verwalten:</p>
+                
+                <div class="mt-6">
+                    <button onclick="showCookieSettings()" class="bg-zinc-800 text-white px-6 py-3 rounded-lg hover:bg-zinc-700 transition-colors">
+                        <i class="fas fa-cog mr-2"></i>
+                        <span class="manage-cookies-btn">Cookie-Einstellungen verwalten</span>
+                    </button>
+                </div>
+
+                <h2 class="delete-cookies-title">Cookies löschen</h2>
+                <p class="delete-cookies-text">Sie können Cookies in Ihrem Browser jederzeit löschen. Die Anleitung dazu finden Sie in der Hilfe Ihres Browsers. Beachten Sie, dass das Löschen von Cookies die Funktionalität der Website beeinträchtigen kann.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer will be inserted here by footer.js -->
+    <div id="footer-container"></div>
+
+    <!-- Back to Top Button -->
+    <button onclick="scrollToTop()" class="fixed bottom-8 right-8 bg-zinc-800 text-white w-12 h-12 rounded-full hover:bg-zinc-700 transition-colors z-50" style="display: none;" id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // FIXED: Global currentLanguage variable
+        window.currentLanguage = 'de'; // Default to German for legal page
+
+        // Translations für die Legal-Seite
+        const legalTranslations = {
+            en: {
+                // Page Meta
+                pageTitle: 'Legal',
+                pageSubtitle: 'Imprint, Privacy & Terms',
+                legalLabel: 'Legal',
+                scrollHint: 'Scroll for details',
+                
+                // Navigation
+                navImpressum: 'Imprint',
+                navDataschutz: 'Privacy',
+                navAgb: 'Terms',
+                navCookies: 'Cookie Info',
+                
+                // Impressum
+                impressumTitle: 'Imprint',
+                tmgTitle: 'Information according to § 5 TMG',
+                responsibleLabel: 'Responsible for content:',
+                contactLabel: 'Contact:',
+                rstvTitle: 'Responsible for content according to § 55 Abs. 2 RStV',
+                disclaimerTitle: 'Disclaimer',
+                contentLiabilityTitle: 'Liability for Content',
+                contentLiabilityText: 'The contents of our pages have been created with the greatest care. However, we cannot guarantee the accuracy, completeness and timeliness of the content. As a service provider, we are responsible for our own content on these pages according to general laws in accordance with § 7 para. 1 TMG.',
+                linksLiabilityTitle: 'Liability for Links',
+                linksLiabilityText: 'Our offer contains links to external websites of third parties, on whose contents we have no influence. Therefore, we cannot assume any liability for these external contents. The respective provider or operator of the pages is always responsible for the contents of the linked pages.',
+                copyrightTitle: 'Copyright',
+                copyrightText: 'The content and works created by the site operators on these pages are subject to German copyright law. Duplication, processing, distribution and any form of commercialization of such material beyond the scope of the copyright law shall require the prior written consent of its respective author or creator.',
+                artworkNote: 'The artworks presented on this website are the property of the respective artists and are shown with their permission as part of "The Infinite Canvas" project.',
+                
+                // Datenschutz
+                privacyTitle: 'Privacy Policy',
+                privacyOverviewTitle: '1. Privacy at a glance',
+                generalNotesTitle: 'General Information',
+                generalNotesText: 'The following information provides a simple overview of what happens to your personal data when you visit this website. Personal data is any data that can be used to identify you personally.',
+                dataCollectionTitle: 'Data collection on this website',
+                responsibleQuestion: 'Who is responsible for data collection on this website?',
+                dataCollectionText: 'Data processing on this website is carried out by the website operator. You can find their contact details in the imprint of this website.',
+                hostingTitle: '2. Hosting',
+                hostingText: 'This website is hosted externally. The personal data collected on this website is stored on the servers of the hoster. This may include IP addresses, contact requests, meta and communication data, contract data, contact data, names, website access and other data generated via a website.',
+                contactFormTitle: '3. Contact Form',
+                contactFormText: 'If you send us inquiries via contact form, your details from the inquiry form including the contact data you provided there will be stored by us for the purpose of processing the inquiry and in case of follow-up questions.',
+                processedDataTitle: 'Processed data:',
+                emailjsTitle: '4. EmailJS',
+                emailjsText: 'We use the EmailJS service to transmit contact forms. The data entered in the contact form is sent to us by email to process your inquiry.',
+                rightsTitle: '5. Your Rights',
+                rightsText: 'You have the right at any time to receive information free of charge about your stored personal data, their origin and recipients and the purpose of data processing and, if applicable, a right to correction or deletion of this data.',
+                
+                // AGB
+                termsTitle: 'Terms and Conditions',
+                scopeTitle: '1. Scope',
+                scopeText: 'These Terms and Conditions apply to the use of the website "The Infinite Canvas" and all related services. Operator is Leonard Marx, Immenstraße 13, 14542 Werder.',
+                projectDescTitle: '2. Project Description',
+                projectDescText: '"The Infinite Canvas" is a collaborative art project that mainly takes place on the TikTok platform (@the_infiniteCanvas). This website serves as a gallery and information platform for the project.',
+                projectScopeTitle: 'Project scope:',
+                artistParticipationTitle: '3. Artist Participation',
+                participationConditionsTitle: '3.1 Participation conditions for artists',
+                rightsObligationsTitle: '3.2 Rights and obligations of artists',
+                disclaimerTermsTitle: '4. Disclaimer',
+                disclaimerTermsText: 'We do not guarantee the accuracy, completeness or timeliness of the information provided. We assume no responsibility for content of external websites (artist profiles, social media).',
+                disputeResolutionTitle: '5. Dispute Resolution',
+                disputeResolutionText: 'German law applies excluding the UN Convention on Contracts for the International Sale of Goods. Exclusive place of jurisdiction is Potsdam, insofar as legally permissible.',
+                
+                // Cookie Info
+                cookieInfoTitle: 'Cookie Information',
+                whatCookiesTitle: 'What are cookies?',
+                whatCookiesText: 'Cookies are small text files that are stored by websites on your computer or mobile device. They help us improve the website and provide you with a better user experience.',
+                whichCookiesTitle: 'Which cookies do we use?',
+                essentialCookiesTitle: 'Necessary Cookies',
+                essentialCookiesText: 'These cookies are essential for the website to function and cannot be disabled. They enable basic functions such as security, network management and accessibility.',
+                functionalCookiesTitle: 'Functional Cookies',
+                functionalCookiesText: 'These cookies enable advanced functions and personalization, such as:',
+                analyticsCookiesTitle: 'Analytics Cookies',
+                analyticsCookiesText: 'These cookies help us understand how visitors interact with the website by collecting and reporting anonymous information:',
+                cookieSettingsTitle: 'Your Cookie Settings',
+                cookieSettingsText: 'You can change your cookie settings at any time. Click the button below to manage your preferences:',
+                manageCookiesBtn: 'Manage Cookie Settings',
+                deleteCookiesTitle: 'Delete Cookies',
+                deleteCookiesText: 'You can delete cookies in your browser at any time. You can find instructions for this in your browser\'s help. Please note that deleting cookies may affect the functionality of the website.'
+            },
+            de: {
+                // Page Meta
+                pageTitle: 'Rechtliches',
+                pageSubtitle: 'Impressum, Datenschutz & AGB',
+                legalLabel: 'Legal',
+                scrollHint: 'Scrollen für Details',
+                
+                // Navigation
+                navImpressum: 'Impressum',
+                navDataschutz: 'Datenschutz',
+                navAgb: 'AGB',
+                navCookies: 'Cookie-Info',
+                
+                // Impressum
+                impressumTitle: 'Impressum',
+                tmgTitle: 'Angaben gemäß § 5 TMG',
+                responsibleLabel: 'Verantwortlich für den Inhalt:',
+                contactLabel: 'Kontakt:',
+                rstvTitle: 'Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV',
+                disclaimerTitle: 'Haftungsausschluss',
+                contentLiabilityTitle: 'Haftung für Inhalte',
+                contentLiabilityText: 'Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.',
+                linksLiabilityTitle: 'Haftung für Links',
+                linksLiabilityText: 'Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.',
+                copyrightTitle: 'Urheberrecht',
+                copyrightText: 'Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.',
+                artworkNote: 'Die auf dieser Website präsentierten Kunstwerke sind Eigentum der jeweiligen Künstler und werden mit deren Erlaubnis im Rahmen des "The Infinite Canvas" Projekts gezeigt.',
+                
+                // Datenschutz
+                privacyTitle: 'Datenschutzerklärung',
+                privacyOverviewTitle: '1. Datenschutz auf einen Blick',
+                generalNotesTitle: 'Allgemeine Hinweise',
+                generalNotesText: 'Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.',
+                dataCollectionTitle: 'Datenerfassung auf dieser Website',
+                responsibleQuestion: 'Wer ist verantwortlich für die Datenerfassung auf dieser Website?',
+                dataCollectionText: 'Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.',
+                hostingTitle: '2. Hosting',
+                hostingText: 'Diese Website wird extern gehostet. Die personenbezogenen Daten, die auf dieser Website erfasst werden, werden auf den Servern des Hosters gespeichert. Hierbei kann es sich v. a. um IP-Adressen, Kontaktanfragen, Meta- und Kommunikationsdaten, Vertragsdaten, Kontaktdaten, Namen, Websitezugriffe und sonstige Daten, die über eine Website generiert werden, handeln.',
+                contactFormTitle: '3. Kontaktformular',
+                contactFormText: 'Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.',
+                processedDataTitle: 'Verarbeitete Daten:',
+                emailjsTitle: '4. EmailJS',
+                emailjsText: 'Für die Übermittlung von Kontaktformularen nutzen wir den Dienst EmailJS. Die in das Kontaktformular eingegebenen Daten werden zur Bearbeitung Ihrer Anfrage per E-Mail an uns übermittelt.',
+                rightsTitle: '5. Ihre Rechte',
+                rightsText: 'Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung und ggf. ein Recht auf Berichtigung oder Löschung dieser Daten.',
+                
+                // AGB
+                termsTitle: 'Allgemeine Geschäftsbedingungen (AGB)',
+                scopeTitle: '1. Geltungsbereich',
+                scopeText: 'Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für die Nutzung der Website "The Infinite Canvas" und alle damit verbundenen Dienstleistungen. Betreiber ist Leonard Marx, Immenstraße 13, 14542 Werder.',
+                projectDescTitle: '2. Projektbeschreibung',
+                projectDescText: '"The Infinite Canvas" ist ein kollaboratives Kunstprojekt, das hauptsächlich auf der Plattform TikTok (@the_infiniteCanvas) stattfindet. Diese Website dient als Galerie und Informationsplattform für das Projekt.',
+                projectScopeTitle: 'Projektumfang:',
+                artistParticipationTitle: '3. Künstlerbeteiligung',
+                participationConditionsTitle: '3.1 Teilnahmebedingungen für Künstler',
+                rightsObligationsTitle: '3.2 Rechte und Pflichten der Künstler',
+                disclaimerTermsTitle: '4. Haftungsausschluss',
+                disclaimerTermsText: 'Wir übernehmen keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Informationen. Für Inhalte externer Websites (Künstlerprofile, Social Media) übernehmen wir keine Verantwortung.',
+                disputeResolutionTitle: '5. Streitbeilegung',
+                disputeResolutionText: 'Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts. Ausschließlicher Gerichtsstand ist Potsdam, soweit gesetzlich zulässig.',
+                
+                // Cookie Info
+                cookieInfoTitle: 'Cookie-Informationen',
+                whatCookiesTitle: 'Was sind Cookies?',
+                whatCookiesText: 'Cookies sind kleine Textdateien, die von Websites auf Ihrem Computer oder Mobilgerät gespeichert werden. Sie helfen uns dabei, die Website zu verbessern und Ihnen eine bessere Nutzererfahrung zu bieten.',
+                whichCookiesTitle: 'Welche Cookies verwenden wir?',
+                essentialCookiesTitle: 'Notwendige Cookies',
+                essentialCookiesText: 'Diese Cookies sind für das Funktionieren der Website unbedingt erforderlich und können nicht deaktiviert werden. Sie ermöglichen grundlegende Funktionen wie Sicherheit, Netzwerkmanagement und Zugänglichkeit.',
+                functionalCookiesTitle: 'Funktionale Cookies',
+                functionalCookiesText: 'Diese Cookies ermöglichen erweiterte Funktionen und Personalisierung, wie:',
+                analyticsCookiesTitle: 'Analyse Cookies',
+                analyticsCookiesText: 'Diese Cookies helfen uns zu verstehen, wie Besucher mit der Website interagieren, indem sie anonyme Informationen sammeln und melden:',
+                cookieSettingsTitle: 'Ihre Cookie-Einstellungen',
+                cookieSettingsText: 'Sie können Ihre Cookie-Einstellungen jederzeit ändern. Klicken Sie auf den Button unten, um Ihre Präferenzen zu verwalten:',
+                manageCookiesBtn: 'Cookie-Einstellungen verwalten',
+                deleteCookiesTitle: 'Cookies löschen',
+                deleteCookiesText: 'Sie können Cookies in Ihrem Browser jederzeit löschen. Die Anleitung dazu finden Sie in der Hilfe Ihres Browsers. Beachten Sie, dass das Löschen von Cookies die Funktionalität der Website beeinträchtigen kann.'
+            }
+        };
+
+        // FIXED: Global updatePageLanguage function that works with navbar
+        window.updatePageLanguage = function(lang) {
+            console.log('Legal page: Updating language to', lang);
+            window.currentLanguage = lang; // Update global variable
+            
+            const t = legalTranslations[lang];
+            
+            // Page Meta
+            const pageTitle = document.getElementById('page-title');
+            const pageSubtitle = document.getElementById('page-subtitle');
+            const legalLabel = document.getElementById('legal-label');
+            const scrollHint = document.getElementById('scroll-hint');
+            
+            if (pageTitle) pageTitle.textContent = t.pageTitle;
+            if (pageSubtitle) pageSubtitle.textContent = t.pageSubtitle;
+            if (legalLabel) legalLabel.textContent = t.legalLabel;
+            if (scrollHint) scrollHint.textContent = t.scrollHint;
+            
+            // Navigation
+            const navImpressum = document.querySelector('.nav-impressum-text');
+            const navDataschutz = document.querySelector('.nav-datenschutz-text');
+            const navAgb = document.querySelector('.nav-agb-text');
+            const navCookies = document.querySelector('.nav-cookies-text');
+            
+            if (navImpressum) navImpressum.textContent = t.navImpressum;
+            if (navDataschutz) navDataschutz.textContent = t.navDataschutz;
+            if (navAgb) navAgb.textContent = t.navAgb;
+            if (navCookies) navCookies.textContent = t.navCookies;
+            
+            // Content - only update if elements exist
+            updateElementIfExists('.impressum-title', t.impressumTitle);
+            updateElementIfExists('.tmg-title', t.tmgTitle);
+            updateElementIfExists('.responsible-label', t.responsibleLabel);
+            updateElementIfExists('.contact-label', t.contactLabel);
+            updateElementIfExists('.rstv-title', t.rstvTitle);
+            updateElementIfExists('.disclaimer-title', t.disclaimerTitle);
+            updateElementIfExists('.content-liability-title', t.contentLiabilityTitle);
+            updateElementIfExists('.content-liability-text', t.contentLiabilityText);
+            updateElementIfExists('.links-liability-title', t.linksLiabilityTitle);
+            updateElementIfExists('.links-liability-text', t.linksLiabilityText);
+            updateElementIfExists('.copyright-title', t.copyrightTitle);
+            updateElementIfExists('.copyright-text', t.copyrightText);
+            updateElementIfExists('.artwork-note', t.artworkNote);
+            
+            // Privacy content
+            updateElementIfExists('.privacy-title', t.privacyTitle);
+            updateElementIfExists('.privacy-overview-title', t.privacyOverviewTitle);
+            updateElementIfExists('.general-notes-title', t.generalNotesTitle);
+            updateElementIfExists('.general-notes-text', t.generalNotesText);
+            updateElementIfExists('.data-collection-title', t.dataCollectionTitle);
+            updateElementIfExists('.responsible-question', t.responsibleQuestion);
+            updateElementIfExists('.data-collection-text', t.dataCollectionText);
+            updateElementIfExists('.hosting-title', t.hostingTitle);
+            updateElementIfExists('.hosting-text', t.hostingText);
+            updateElementIfExists('.contact-form-title', t.contactFormTitle);
+            updateElementIfExists('.contact-form-text', t.contactFormText);
+            updateElementIfExists('.processed-data-title', t.processedDataTitle);
+            updateElementIfExists('.emailjs-title', t.emailjsTitle);
+            updateElementIfExists('.emailjs-text', t.emailjsText);
+            updateElementIfExists('.rights-title', t.rightsTitle);
+            updateElementIfExists('.rights-text', t.rightsText);
+            
+            // Terms content
+            updateElementIfExists('.terms-title', t.termsTitle);
+            updateElementIfExists('.scope-title', t.scopeTitle);
+            updateElementIfExists('.scope-text', t.scopeText);
+            updateElementIfExists('.project-desc-title', t.projectDescTitle);
+            updateElementIfExists('.project-desc-text', t.projectDescText);
+            updateElementIfExists('.project-scope-title', t.projectScopeTitle);
+            updateElementIfExists('.artist-participation-title', t.artistParticipationTitle);
+            updateElementIfExists('.participation-conditions-title', t.participationConditionsTitle);
+            updateElementIfExists('.rights-obligations-title', t.rightsObligationsTitle);
+            updateElementIfExists('.disclaimer-terms-title', t.disclaimerTermsTitle);
+            updateElementIfExists('.disclaimer-terms-text', t.disclaimerTermsText);
+            updateElementIfExists('.dispute-resolution-title', t.disputeResolutionTitle);
+            updateElementIfExists('.dispute-resolution-text', t.disputeResolutionText);
+            
+            // Cookie content
+            updateElementIfExists('.cookie-info-title', t.cookieInfoTitle);
+            updateElementIfExists('.what-cookies-title', t.whatCookiesTitle);
+            updateElementIfExists('.what-cookies-text', t.whatCookiesText);
+            updateElementIfExists('.which-cookies-title', t.whichCookiesTitle);
+            updateElementIfExists('.essential-cookies-title', t.essentialCookiesTitle);
+            updateElementIfExists('.essential-cookies-text', t.essentialCookiesText);
+            updateElementIfExists('.functional-cookies-title', t.functionalCookiesTitle);
+            updateElementIfExists('.functional-cookies-text', t.functionalCookiesText);
+            updateElementIfExists('.analytics-cookies-title', t.analyticsCookiesTitle);
+            updateElementIfExists('.analytics-cookies-text', t.analyticsCookiesText);
+            updateElementIfExists('.cookie-settings-title', t.cookieSettingsTitle);
+            updateElementIfExists('.cookie-settings-text', t.cookieSettingsText);
+            updateElementIfExists('.manage-cookies-btn', t.manageCookiesBtn);
+            updateElementIfExists('.delete-cookies-title', t.deleteCookiesTitle);
+            updateElementIfExists('.delete-cookies-text', t.deleteCookiesText);
+
+            // Update footer language
+            if (typeof updateFooterLanguage === 'function') {
+                updateFooterLanguage(lang);
+            }
+        };
+
+        // Helper function to safely update elements
+        function updateElementIfExists(selector, text) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.textContent = text;
+            }
+        }
+
+        // Navigation zwischen den Inhalten
+        function showContent(contentId) {
+            // Alle Inhalte verstecken
+            const contents = document.querySelectorAll('.legal-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Alle Navigation-Buttons deaktivieren
+            const navButtons = document.querySelectorAll('.nav-button');
+            navButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Gewählten Inhalt anzeigen
+            const contentElement = document.getElementById('content-' + contentId);
+            const navElement = document.getElementById('nav-' + contentId);
+            
+            if (contentElement) contentElement.classList.add('active');
+            if (navElement) navElement.classList.add('active');
+
+            // Nach oben scrollen
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Back to Top Funktionalität
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Back to Top Button ein-/ausblenden
+        window.addEventListener('scroll', function() {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (backToTopButton) {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.style.display = 'block';
+                } else {
+                    backToTopButton.style.display = 'none';
+                }
+            }
+        });
+
+        // Cookie-Settings-Funktionalität
+        function showCookieSettings() {
+            if (typeof window.cookieManager !== 'undefined' && window.cookieManager.showSettings) {
+                window.cookieManager.showSettings();
+            } else {
+                console.log('Cookie-Manager nicht geladen. Versuche nach 1 Sekunde erneut...');
+                setTimeout(() => {
+                    if (typeof window.cookieManager !== 'undefined' && window.cookieManager.showSettings) {
+                        window.cookieManager.showSettings();
+                    } else {
+                        alert('Cookie-Manager ist noch nicht verfügbar. Bitte versuchen Sie es in einem Moment erneut.');
+                    }
+                }, 1000);
+            }
+        }
+
+        // URL-Hash-Navigation - IMPROVED
+        function handleURLHash() {
+            const hash = window.location.hash.substring(1); // Remove #
+            const urlParams = new URLSearchParams(window.location.search);
+            const langParam = urlParams.get('lang');
+            
+            // Set language from URL parameter
+            if (langParam && (langParam === 'en' || langParam === 'de')) {
+                window.currentLanguage = langParam;
+                updatePageLanguage(langParam);
+            }
+            
+            // Show content based on hash
+            if (hash && document.getElementById('content-' + hash)) {
+                showContent(hash);
+            }
+        }
+
+        // Hash-Updates bei Navigation
+        const originalShowContent = showContent;
+        showContent = function(contentId) {
+            originalShowContent(contentId);
+            // Update URL hash without reload
+            history.replaceState(null, null, '#' + contentId);
+        };
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Legal page DOM loaded');
+            
+            // Initialize navbar with legal page identifier
+            if (typeof initNavbar === 'function') {
+                initNavbar('legal');
+                console.log('Navbar initialized for legal page');
+            } else {
+                console.error('initNavbar function not found!');
+            }
+            
+            // Initialize footer with DARK theme
+            if (typeof initFooter === 'function') {
+                initFooter('dark');
+                console.log('Footer initialized for legal page');
+            } else {
+                console.error('initFooter function not found!');
+            }
+            
+            // Handle URL hash and language
+            handleURLHash();
+            
+            // Set default language if not set by URL
+            if (!window.currentLanguage) {
+                window.currentLanguage = 'de';
+                updatePageLanguage('de');
+            }
+            
+            console.log('Legal page initialized with language:', window.currentLanguage);
+        });
+
+        // Handle hash changes
+        window.addEventListener('hashchange', handleURLHash);
+        window.addEventListener('load', handleURLHash);
+    </script>
+</body>
+</html>
