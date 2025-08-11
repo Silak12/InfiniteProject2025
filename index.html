@@ -265,31 +265,17 @@
         .mood-soft { background: linear-gradient(135deg, rgba(254, 205, 211, 0.8), rgba(252, 165, 165, 0.8)); }
         .mood-electric { background: linear-gradient(135deg, rgba(196, 181, 253, 0.8), rgba(147, 51, 234, 0.8)); }
         
-        /* METALLIC FRAME GALLERY - INSPIRED BY CODEPEN */
+        /* METALLIC FRAME GALLERY - INSPIRED BY CODEPEN - FIXED FOR MOBILE 3 COLUMNS */
         .metallic-gallery-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 1fr); /* IMMER 3 Spalten auf allen Geräten */
             gap: 3px; /* SEHR KLEINER ABSTAND - fast direkt aneinander */
             width: 100%;
             max-width: 1000px;
             margin: 0 auto;
         }
         
-        @media (max-width: 768px) {
-            .metallic-gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2px; /* Noch kleiner für Mobile */
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .metallic-gallery-grid {
-                grid-template-columns: 1fr;
-                gap: 3px;
-            }
-        }
-        
-        /* Gallery Piece Styles - METALLIC FRAMES */
+        /* Gallery Piece Styles - METALLIC FRAMES - NO BORDER RADIUS */
         .gallery-artwork {
             position: relative;
             aspect-ratio: 4 / 5; /* Gleichmäßige Größe für alle Bilder */
@@ -297,8 +283,7 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             
-            /* Metallic Frame Effect */
-            border-radius: 4px;
+            /* Metallic Frame Effect - KEIN BORDER RADIUS */
             border: solid 10px;
             border-image: linear-gradient(to bottom right, #56575a, #000) 1;
             box-shadow: 
@@ -314,13 +299,13 @@
                 0 10px 20px 10px rgba(0, 0, 0, 0.3);
         }
         
-        /* Artwork Image - FIXED SIZE */
+        /* Artwork Image - FIXED SIZE - NO BORDER RADIUS */
         .gallery-artwork .artwork-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            border-radius: 1px;
+            /* ENTFERNT: border-radius: 1px; */
             
             /* Inner metallic border */
             border: groove 4px;
@@ -588,10 +573,6 @@
     <!-- Navbar will be inserted here by navbar.js -->
     <div id="navbar-container"></div>
     
-    <!-- DEBUG: Show loading status -->
-    <div id="debug-info" style="position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px; z-index: 9999; font-size: 12px;">
-        Loading...
-    </div>
     <!-- Liquid Glass Hero Section -->
     <section class="liquid-glass-hero" id="hero-section">
         <!-- Background Artworks Grid -->
@@ -726,34 +707,28 @@
 
         // Page translations - Updated for professional gallery
         const pageTranslations = {
-        en: {
-            subtitle: "'The whole is more than the sum of its parts'",
-            scrollHint: 'Scroll to explore',
-            heroCollective: 'Interactive Gallery',
-            aboutTitle: 'The Exhibition',
-            aboutText: 'Enter the official gallery of The Infinite Canvas — where every image builds on the last. See the story unfold on TikTok @the_infiniteCanvas.',
-            // Counter-Label zeigt Featured Artists und Waitlist an
-
-            galleryTitle: 'Art Gallery',
-            viewWork: 'View work',
-            // Neuer CTA-Block
-            conceptLabel: 'Open to All',
-            conceptText: 'Whether oil paintings, analogue creations, or digital art—everyone’s welcome. Scroll down to discover a never-ending artwork.'
-        },
-        de: {
-            subtitle: "'Das Ganze ist mehr als die Summe seiner Teile'",
-            scrollHint: 'Scrollen um zu entdecken',
-            heroCollective: 'Interaktive Galerie',
-            aboutTitle: 'Die Ausstellung',
-            aboutText: 'Tritt der offiziellen Galerie von The Infinite Canvas bei – jedes Bild baut auf dem vorherigen auf. Sieh, wie die Story auf TikTok @the_infiniteCanvas weitergeht.',
-            // Zweizeiliges Label auf Deutsch
-
-            galleryTitle: 'Kunst Galerie',
-            viewWork: 'Werk ansehen',
-            // Neuer deutscher CTA-Block
-            conceptLabel: 'Offen für alle',
-            conceptText: 'Egal ob Ölgemälde, analoge Werke oder Digitalkunst – alle sind willkommen. Scroll nach unten und entdecke ein endloses Kunstwerk.'
-        }
+            en: {
+                subtitle: "'The whole is more than the sum of its parts'",
+                scrollHint: 'Scroll to explore',
+                heroCollective: 'Interactive Gallery',
+                aboutTitle: 'The Exhibition',
+                aboutText: 'Enter the official gallery of The Infinite Canvas — where every image builds on the last. See the story unfold on TikTok @the_infiniteCanvas.',
+                galleryTitle: 'Art Gallery',
+                viewWork: 'View work',
+                conceptLabel: 'Open to All',
+                conceptText: 'Whether oil paintings, analogue creations, or digital art—everyone\'s welcome. Scroll down to discover a never-ending artwork.'
+            },
+            de: {
+                subtitle: "'Das Ganze ist mehr als die Summe seiner Teile'",
+                scrollHint: 'Scrollen um zu entdecken',
+                heroCollective: 'Interaktive Galerie',
+                aboutTitle: 'Die Ausstellung',
+                aboutText: 'Tritt der offiziellen Galerie von The Infinite Canvas bei – jedes Bild baut auf dem vorherigen auf. Sieh, wie die Story auf TikTok @the_infiniteCanvas weitergeht.',
+                galleryTitle: 'Kunst Galerie',
+                viewWork: 'Werk ansehen',
+                conceptLabel: 'Offen für alle',
+                conceptText: 'Egal ob Ölgemälde, analoge Werke oder Digitalkunst – alle sind willkommen. Scroll nach unten und entdecke ein endloses Kunstwerk.'
+            }
         };
 
 
@@ -808,7 +783,7 @@
             console.log(`Created ${artworkData.length} artwork tiles`);
         }
 
-        // PURE Mouse Control (PC) + Auto-Movement (Mobile) Spotlight
+        // PURE Mouse Control (PC) + Auto-Movement (Mobile) Spotlight - FPS INDEPENDENT
         function initLiquidGlass() {
             const heroSection = document.getElementById('hero-section');
             const glassOrb = document.getElementById('glass-orb');
@@ -830,11 +805,15 @@
             let currentY = 0;
             let isMouseActive = false;
             let animationId;
+            let lastTime = performance.now();
             
             const isMobile = window.innerWidth < 768;
             
+            // FPS-independent smoothing (60fps = 16.67ms target)
+            const targetFrameTime = 16.67;
+            const baseSmoothness = 0.08; // Erhöht für bessere Responsiveness
+            
             if (isMobile) {
-                const smoothness = 0.02;
                 const mouseAttraction = 0.3;
                 
                 let time = 0;
@@ -848,12 +827,19 @@
                     tertiary: { freqX: 0.6, freqY: 1.8, phaseX: Math.PI * 0.7, phaseY: Math.PI * 0.2 }
                 };
                 
-                function updateSpotlightPosition() {
+                function updateSpotlightPosition(currentTime) {
+                    const deltaTime = currentTime - lastTime;
+                    lastTime = currentTime;
+                    
+                    // Frame-rate independent smoothing
+                    const smoothingFactor = Math.min(1, (deltaTime / targetFrameTime) * baseSmoothness);
+                    
                     const rect = heroSection.getBoundingClientRect();
                     const centerX = rect.width * 0.5;
                     const centerY = rect.height * 0.5;
                     
-                    time += autoSpeed * 0.02;
+                    // Use actual delta time for animation
+                    time += (autoSpeed * deltaTime) / 1000;
                     
                     let autoX = centerX;
                     let autoY = centerY;
@@ -881,8 +867,9 @@
                         targetY = autoY;
                     }
                     
-                    currentX += (targetX - currentX) * smoothness;
-                    currentY += (targetY - currentY) * smoothness;
+                    // FPS-independent smooth movement
+                    currentX += (targetX - currentX) * smoothingFactor;
+                    currentY += (targetY - currentY) * smoothingFactor;
                     
                     const screenX = rect.left + currentX;
                     const screenY = rect.top + currentY;
@@ -899,8 +886,9 @@
                     currentY = rect.height * 0.5;
                     targetX = currentX;
                     targetY = currentY;
+                    lastTime = performance.now();
                     glassOrb.style.opacity = '1';
-                    updateSpotlightPosition();
+                    updateSpotlightPosition(lastTime);
                 }
                 
                 heroSection.addEventListener('mousemove', (e) => {
@@ -928,15 +916,44 @@
                 observer.observe(heroSection);
                 
             } else {
+                // PC VERSION - Smooth mouse following with FPS independence
+                let pcAnimationId;
+                
+                function updatePCSpotlight(currentTime) {
+                    const deltaTime = currentTime - lastTime;
+                    lastTime = currentTime;
+                    
+                    const smoothingFactor = Math.min(1, (deltaTime / targetFrameTime) * baseSmoothness);
+                    
+                    // Smooth movement towards mouse position
+                    currentX += (targetX - currentX) * smoothingFactor;
+                    currentY += (targetY - currentY) * smoothingFactor;
+                    
+                    const rect = heroSection.getBoundingClientRect();
+                    const screenX = rect.left + currentX;
+                    const screenY = rect.top + currentY;
+                    
+                    glassOrb.style.left = screenX + 'px';
+                    glassOrb.style.top = screenY + 'px';
+                    
+                    updateSpotlightMask(currentX, currentY);
+                    
+                    // Continue animation if mouse is active
+                    if (glassOrb.style.opacity === '1') {
+                        pcAnimationId = requestAnimationFrame(updatePCSpotlight);
+                    }
+                }
+                
                 heroSection.addEventListener('mousemove', (e) => {
                     const rect = heroSection.getBoundingClientRect();
-                    const mouseXLocal = e.clientX - rect.left;
-                    const mouseYLocal = e.clientY - rect.top;
+                    targetX = e.clientX - rect.left;
+                    targetY = e.clientY - rect.top;
                     
-                    glassOrb.style.left = e.clientX + 'px';
-                    glassOrb.style.top = e.clientY + 'px';
-                    
-                    updateSpotlightMask(mouseXLocal, mouseYLocal);
+                    // Start smooth animation if not already running
+                    if (!pcAnimationId) {
+                        lastTime = performance.now();
+                        pcAnimationId = requestAnimationFrame(updatePCSpotlight);
+                    }
                 });
                 
                 heroSection.addEventListener('mouseenter', () => {
@@ -945,6 +962,10 @@
                 
                 heroSection.addEventListener('mouseleave', () => {
                     glassOrb.style.opacity = '0';
+                    if (pcAnimationId) {
+                        cancelAnimationFrame(pcAnimationId);
+                        pcAnimationId = null;
+                    }
                     hideSpotlight();
                 });
             }
@@ -1026,8 +1047,8 @@
                 galleryArtwork.className = 'gallery-artwork';
                 
                 const artworkContent = artwork.image ? 
-                    `<img src="${artwork.image}" alt="${artwork.artist}" class="artwork-image" style="border-radius: 1px;">` :
-                    `<div class="absolute inset-0 mood-${artwork.mood} artwork-image" style="border-radius: 1px;">
+                    `<img src="${artwork.image}" alt="${artwork.artist}" class="artwork-image">` :
+                    `<div class="absolute inset-0 mood-${artwork.mood} artwork-image">
                         <div class="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none"></div>
                     </div>`;
                 
@@ -1155,16 +1176,9 @@
 
         // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
-            const debugInfo = document.getElementById('debug-info');
-            debugInfo.textContent = 'DOM loaded, waiting for navbar...';
-            
             setTimeout(() => {
                 if (typeof initNavbar === 'function') {
                     initNavbar('home');
-                    debugInfo.textContent = 'Navbar loaded, creating artworks...';
-                } else {
-                    debugInfo.textContent = 'ERROR: navbar.js not loaded!';
-                    debugInfo.style.background = 'rgba(255,0,0,0.8)';
                 }
 
                 // Initialize footer with dark theme (for index.html)
@@ -1173,21 +1187,15 @@
                 }
                 
                 createHeroArtworks();
-                debugInfo.textContent = 'Artworks created, initializing spotlight...';
                 
                 setTimeout(() => {
                     initLiquidGlass();
-                    debugInfo.textContent = 'Spotlight active! Creating gallery...';
                 }, 100);
                 
                 createMetallicGallery();
                 updatePageLanguage('en');
                 initHomeNavbarBehavior();
                 initDynamicNavbar();
-                
-                setTimeout(() => {
-                    debugInfo.style.display = 'none';
-                }, 3000);
                 
             }, 200);
             

@@ -56,10 +56,10 @@ function createFooter(pageType = 'dark') {
                     
                     <!-- Social Links -->
                     <div class="flex items-center justify-center space-x-8 mb-8">
-                        <a href="https://tiktok.com/@the-infinitecanvas" target="_blank" rel="noopener noreferrer" class="${linkClasses}">
+                        <a href="https://tiktok.com/@the.infinite.canvas" target="_blank" rel="noopener noreferrer" class="${linkClasses}">
                             <i class="fab fa-tiktok mr-1"></i>TikTok
                         </a>
-                        <a href="https://instagram.com/the-infinitecanvas" target="_blank" rel="noopener noreferrer" class="${linkClasses}">
+                        <a href="https://instagram.com/the.infinite.canvas.." target="_blank" rel="noopener noreferrer" class="${linkClasses}">
                             <i class="fab fa-instagram mr-1"></i>Instagram
                         </a>
                         <span class="${linkClasses}">—</span>
