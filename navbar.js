@@ -78,7 +78,7 @@ function createNavbar(currentPage = 'home') {
                 <span class="text-lg font-light text-neutral-800">Home</span>
               </div>
             </a>
-            <a href="timeline.html" class="block glass-element rounded-2xl p-4 hover:bg-white/20 transition-all relative z-[105]">
+            <a href="guide.html" class="block glass-element rounded-2xl p-4 hover:bg-white/20 transition-all relative z-[105]">
               <div class="flex items-center space-x-3">
                 <i class="fas fa-clock text-neutral-600"></i>
                 <span class="text-lg font-light text-neutral-800">Guide</span>

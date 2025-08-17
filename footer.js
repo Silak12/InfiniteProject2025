@@ -126,7 +126,7 @@ function createFooter(pageType = 'dark') {
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="timeline.html" class="${linkClasses} block" id="footer-guide-link">
+                                    <a href="guide.html" class="${linkClasses} block" id="footer-guide-link">
                                         <i class="fas fa-clock mr-2"></i>Guide
                                     </a>
                                 </div>
